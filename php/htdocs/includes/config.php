@@ -29,4 +29,8 @@ return [
 
     // Use X-Forwarded-For for the client IP (only behind a trusted proxy). Keep false on InfinityFree.
     'trust_proxy' => false,
+
+    // Troubleshooting: true shows PHP error details on screen and enables /check.php.
+    // Turn it on only while fixing a problem, then set back to false.
+    'debug' => false,
 ];

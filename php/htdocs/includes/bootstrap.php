@@ -11,6 +11,15 @@ mb_internal_encoding('UTF-8');
 // config.local.php (if present, not committed) overrides config.php — handy for local testing.
 $CONFIG = require (is_file(__DIR__ . '/config.local.php') ? __DIR__ . '/config.local.php' : __DIR__ . '/config.php');
 
+if (!empty($CONFIG['debug'])) {
+    ini_set('display_errors', '1');
+    // Show uncaught errors (incl. fatal ones) with file and line instead of a blank "500".
+    set_exception_handler(function (Throwable $e) {
+        if (!headers_sent()) { http_response_code(500); header('Content-Type: text/plain; charset=utf-8'); }
+        echo 'DEBUG: ' . get_class($e) . ': ' . $e->getMessage() . "\n" . $e->getFile() . ':' . $e->getLine() . "\n\n" . $e->getTraceAsString();
+    });
+}
+
 require __DIR__ . '/club.php';
 require __DIR__ . '/time.php';
 require __DIR__ . '/phone.php';
@@ -145,6 +154,6 @@ function api(callable $handler): void
         json_error('Проверьте правильность заполнения формы', 422, ['fields' => $e->fields]);
     } catch (Throwable $e) {
         log_error('api', $e);
-        json_error('Внутренняя ошибка сервера. Попробуйте позже.', 500);
+        json_error('Внутренняя ошибка сервера. Попробуйте позже.', 500, cfg('debug') ? ['debug' => get_class($e) . ': ' . $e->getMessage() . ' @ ' . basename($e->getFile()) . ':' . $e->getLine()] : []);
     }
 }
