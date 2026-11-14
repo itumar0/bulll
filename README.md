@@ -2,7 +2,7 @@
 
 Сайт бильярдного клуба с онлайн-бронированием столов, отправкой заявок в WhatsApp, live-статусами столов и защищённой админ-панелью.
 
-**Стек:** Next.js 15 (App Router) · TypeScript · Tailwind CSS v4 · Prisma (SQLite → PostgreSQL) · Zod · framer-motion · jose (JWT) · bcryptjs
+**Стек:** Next.js 15 (App Router) · TypeScript · Tailwind CSS v4 · Prisma + PostgreSQL · Zod · framer-motion · jose (JWT) · bcryptjs
 
 ---
 
@@ -27,16 +27,20 @@
 - Часовой пояс — `Asia/Bishkek` (UTC+6, без перехода на летнее время). В БД время хранится в UTC.
 - Клуб работает с 12:00 до 02:00. Брони после полуночи относятся к «рабочему дню» предыдущей даты.
 - Статус стола вычисляется по текущему времени: пока идёт бронь (`startAt ≤ now < endAt`), стол «Занят». Когда время брони вышло, стол сам становится «Свободен».
-- Двойные брони исключены: пересечение проверяется на сервере внутри транзакции и под блокировкой стола. Интервалы полуоткрытые, поэтому брони встык допустимы.
+- Двойные брони исключены: пересечение проверяется на сервере в транзакции уровня `SERIALIZABLE` (PostgreSQL), конфликты автоматически повторяются. Защита работает и при нескольких серверах: в тесте из 20 одновременных запросов на один слот через два процесса прошёл ровно один. Интервалы полуоткрытые, поэтому брони встык допустимы.
 
 ---
 
-## Быстрый старт
+## Быстрый старт (локально)
 
-Нужен Node.js 20 или новее.
+Нужны Node.js 20 или новее и PostgreSQL. Проще всего поднять PostgreSQL через Docker:
 
 ```bash
 npm install
+```
+
+```bash
+docker compose up -d
 ```
 
 ```bash
@@ -55,10 +59,10 @@ npm run hash-password -- 1111
 node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
 ```
 
-Создайте БД, затем заполните её 8 столами и тестовыми бронями:
+Создайте таблицы (миграция сразу добавляет 8 столов) и, по желанию, тестовые брони:
 
 ```bash
-npx prisma migrate dev
+npx prisma migrate deploy
 ```
 
 ```bash
@@ -71,13 +75,14 @@ npm run dev
 
 Сайт откроется на http://localhost:3000, админка — на http://localhost:3000/admin (пароль `1111`, если вы сгенерировали хэш для него).
 
-> ⚠️ **Знак `$` в хэше.** Next.js подставляет переменные вида `$VAR` внутри `.env`, поэтому каждый `$` в bcrypt-хэше нужно экранировать: `\$`. Скрипт `hash-password` сразу выводит строку в нужном формате. Также поддерживается хэш в base64.
+> ⚠️ **Знак `$` в хэше.** Next.js подставляет переменные вида `$VAR` внутри `.env`, поэтому каждый `$` в bcrypt-хэше нужно экранировать: `\$`. Скрипт `hash-password` сразу выводит строку в нужном формате. В панели Vercel хэш вставляется **без** экранирования. Также поддерживается хэш в base64.
 
 ### Переменные окружения
 
 | Переменная | Описание |
 |---|---|
-| `DATABASE_URL` | `file:./dev.db` для SQLite или строка подключения PostgreSQL |
+| `DATABASE_URL` | Строка подключения PostgreSQL (на Neon — pooled) |
+| `DIRECT_URL` | Прямое подключение для миграций (на Neon — адрес без `-pooler`) |
 | `WHATSAPP_NUMBER` | Номер, на который уходят брони, только цифры: `996506056556` |
 | `ADMIN_PASSWORD_HASH` | bcrypt-хэш пароля админа, `$` экранированы |
 | `JWT_SECRET` | Секрет для подписи сессии, не короче 32 символов |
@@ -102,9 +107,11 @@ npm run dev
 
 ```
 prisma/
-  schema.prisma          модели PoolTable и Booking
-  migrations/            SQL-миграции
-  seed.ts                8 столов и демо-брони
+  schema.prisma          модели PoolTable и Booking (PostgreSQL)
+  migrations/            SQL-миграции (init создаёт 8 столов)
+  seed.ts                демо-брони для разработки
+vercel.json              настройки сборки Vercel
+docker-compose.yml       локальный PostgreSQL
 scripts/hash-password.mjs
 src/
   middleware.ts          CSP (nonce), security-заголовки, защита /admin и /api/admin, проверка Origin
@@ -153,13 +160,22 @@ src/
 - **Публичные API** (статусы и занятость) не отдают имена и телефоны.
 - **Секреты** хранятся только в `.env`. Файл в `.gitignore`, шаблон — `.env.example`.
 
-> Rate limiter хранит счётчики в памяти процесса. Это корректно для одного Node-процесса (VPS). Для нескольких инстансов или serverless замените хранилище в `src/lib/rate-limit.ts` на Redis или Upstash, интерфейс останется тем же.
+> Rate limiter хранит счётчики в памяти процесса. На VPS с одним процессом это работает точно. На Vercel у каждого экземпляра функции свои счётчики, поэтому ограничение действует приблизительно. Для строгого лимита замените хранилище в `src/lib/rate-limit.ts` на Upstash Redis, интерфейс останется тем же.
 
 ---
 
 ## Деплой
 
-### Вариант A: VPS (рекомендуется для SQLite)
+### Vercel + Neon (бесплатно)
+
+1. Создайте базу на https://neon.tech и скопируйте две строки подключения: pooled (с `-pooler` в адресе) и direct.
+2. На https://vercel.com: **Add New → Project →** импортируйте репозиторий. Команды сборки уже заданы в `vercel.json`: `prisma migrate deploy && npm run build`.
+3. В **Settings → Environment Variables** добавьте `DATABASE_URL` (pooled), `DIRECT_URL` (direct), `WHATSAPP_NUMBER`, `ADMIN_PASSWORD_HASH` (без `\$`), `JWT_SECRET` и `SITE_URL` (`https://<проект>.vercel.app`).
+4. Нажмите **Deploy**. Миграция при сборке создаст таблицы и 8 столов.
+
+После каждого пуша в основную ветку Vercel пересобирает сайт автоматически.
+
+### VPS
 
 ```bash
 git clone <repo> && cd <repo>
@@ -169,14 +185,10 @@ git clone <repo> && cd <repo>
 npm ci
 ```
 
-Создайте `.env` для production (с вашим `SITE_URL`), затем примените миграции, засейдьте БД и соберите проект:
+Создайте `.env` для production: PostgreSQL на этом же сервере или Neon, ваш `SITE_URL`. Затем:
 
 ```bash
 npm run db:deploy
-```
-
-```bash
-npm run db:seed
 ```
 
 ```bash
@@ -206,42 +218,10 @@ server {
 }
 ```
 
-Файл SQLite (`prisma/dev.db` или путь из `DATABASE_URL`) нужно регулярно бэкапить.
-
-### Вариант B: Vercel
-
-Файловая система Vercel эфемерна, поэтому SQLite там не подходит. Нужен PostgreSQL (Neon, Supabase, Vercel Postgres):
-
-1. Переключите БД на PostgreSQL (инструкция ниже).
-2. В Vercel → Settings → Environment Variables задайте все переменные из `.env.example`. В интерфейсе Vercel хэш вставляется **без** экранирования `\$` или в base64.
-3. Build Command: `prisma migrate deploy && npm run build`.
-4. Rate limiting на serverless лучше перевести на Upstash Redis (см. раздел «Безопасность»).
-
-### Переход на PostgreSQL
-
-1. В `prisma/schema.prisma` укажите `provider = "postgresql"`.
-2. Задайте `DATABASE_URL="postgresql://user:pass@host:5432/redshot"`.
-3. Пересоздайте миграции (текущие сгенерированы для SQLite):
-
-```bash
-rm -rf prisma/migrations
-```
-
-```bash
-npx prisma migrate dev --name init
-```
-
-```bash
-npm run db:seed
-```
-
-Код приложения менять не нужно: используются только переносимые возможности Prisma. Для дополнительной гарантии от двойных броней в PostgreSQL можно добавить exclusion constraint (`btree_gist`) на `(tableId, tstzrange(startAt, endAt))` для активных статусов.
-
----
-
 ## Проверено
 
 - `npm run build`, `npm run lint`, `npm run typecheck` проходят без ошибок.
+- PostgreSQL: 20 одновременных запросов на один слот через 2 процесса → создана ровно 1 бронь.
 - API: пересечение броней → 409, бронь встык → 201, невалидные данные → 422, запрос без Origin → 403, honeypot срабатывает, rate limit броней и входа срабатывает, подделанный JWT → 401.
 - E2E (Playwright): бронь через форму создаётся, происходит редирект в WhatsApp с правильным текстом, занятый слот становится недоступен.
 - Lighthouse: mobile — Performance 92, Accessibility 100, Best Practices 100, SEO 100; desktop — 100 во всех категориях.

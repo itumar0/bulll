@@ -1,11 +1,11 @@
-// To switch to PostgreSQL: change provider to "postgresql" and DATABASE_URL.
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL") // pooled connection (app runtime)
+  directUrl = env("DIRECT_URL") // direct connection (migrations)
 }
 
 model PoolTable {

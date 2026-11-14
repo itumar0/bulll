@@ -1,5 +1,5 @@
 import "server-only";
-import type { Booking, PoolTable, Prisma } from "@prisma/client";
+import { Prisma, type Booking, type PoolTable } from "@prisma/client";
 import { prisma } from "./prisma";
 import { ACTIVE_STATUSES, CLOSE_MIN, TABLE_META, type TableId } from "./config";
 import { bishkekToUtc, businessDate, dayWindow } from "./time";
@@ -35,6 +35,27 @@ async function withTableLock<T>(tableId: string, fn: () => Promise<T>): Promise<
 
 type Tx = Prisma.TransactionClient;
 
+/**
+ * Run `fn` in a SERIALIZABLE transaction: PostgreSQL then guarantees that two concurrent
+ * "check overlap → insert" transactions cannot both succeed, even across server instances.
+ * Serialization failures (P2034) are retried.
+ */
+async function serializable<T>(fn: (tx: Tx) => Promise<T>): Promise<T> {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return await prisma.$transaction(fn, {
+        isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+        maxWait: 5_000,
+        timeout: 10_000,
+      });
+    } catch (e) {
+      const retryable = e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2034";
+      if (!retryable || attempt >= 4) throw e;
+      await new Promise((r) => setTimeout(r, 20 * attempt + Math.random() * 30));
+    }
+  }
+}
+
 /** Any active booking on `tableId` that overlaps [start, end). Half-open intervals: back-to-back is OK. */
 export async function findConflict(tx: Tx, tableId: string, start: Date, end: Date, excludeId?: number) {
   return tx.booking.findFirst({
@@ -69,7 +90,7 @@ export async function createBooking(args: CreateArgs): Promise<Booking & { table
   if (args.endAt <= args.startAt) throw new BookingError("Некорректный интервал", 400);
 
   return withTableLock(args.tableId, () =>
-    prisma.$transaction(async (tx) => {
+    serializable(async (tx) => {
       const conflict = await findConflict(tx, args.tableId, args.startAt, args.endAt);
       if (conflict) {
         throw new BookingError("Это время уже занято. Выберите другой слот или стол.", 409, "startMinutes");
@@ -114,7 +135,7 @@ export async function extendBooking(id: number, minutes: number) {
   if (!ACTIVE_STATUSES.includes(booking.status as never)) throw new BookingError("Можно продлить только активную бронь", 400);
   const newEnd = new Date(booking.endAt.getTime() + minutes * 60_000);
   return withTableLock(booking.tableId, () =>
-    prisma.$transaction(async (tx) => {
+    serializable(async (tx) => {
       const conflict = await findConflict(tx, booking.tableId, booking.endAt, newEnd, booking.id);
       if (conflict) throw new BookingError("Продление пересекается со следующей бронью", 409);
       return tx.booking.update({ where: { id }, data: { endAt: newEnd } });

@@ -19,8 +19,18 @@ export async function GET(req: NextRequest) {
       q: sp.get("q") || undefined,
     });
 
+    const q = query.q?.trim();
+    const qDigits = q?.replace(/\D/g, "") ?? "";
     const rows = await prisma.booking.findMany({
       where: {
+        ...(q
+          ? {
+              OR: [
+                { name: { contains: q, mode: "insensitive" as const } },
+                ...(qDigits.length >= 3 ? [{ phone: { contains: qDigits } }] : []),
+              ],
+            }
+          : {}),
         ...(query.tableId ? { tableId: query.tableId } : {}),
         ...(query.status ? { status: query.status } : {}),
         ...(query.date
@@ -32,18 +42,9 @@ export async function GET(req: NextRequest) {
       take: 500,
     });
 
-    // Case-insensitive search for Cyrillic is done in JS (SQLite LIKE is ASCII-only).
-    const q = query.q?.toLowerCase();
-    const qDigits = query.q?.replace(/\D/g, "");
-    const filtered = q
-      ? rows.filter(
-          (b) => b.name.toLowerCase().includes(q) || (qDigits && qDigits.length >= 3 && b.phone.includes(qDigits)),
-        )
-      : rows;
-
     return json({
       ok: true,
-      bookings: filtered.map((b) => ({
+      bookings: rows.map((b) => ({
         id: b.id,
         tableId: b.tableId,
         tableName: b.table.name,
