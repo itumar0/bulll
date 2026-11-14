@@ -63,7 +63,7 @@ export function Timeline({
           <div className="relative">
             {TABLE_IDS.map((id) => (
               <div key={id} className="flex h-12 items-center border-t border-white/[0.05]">
-                <span className="w-20 shrink-0 text-sm font-bold">{TABLE_META[id].name}</span>
+                <span className="sticky left-0 z-10 w-20 shrink-0 self-stretch bg-ink-900 pl-1 text-sm leading-[3rem] font-bold">{TABLE_META[id].name}</span>
                 <div className="relative h-9 flex-1">
                   {HOURS.map((h) => (
                     <span key={h} className="absolute inset-y-0 w-px bg-white/[0.05]" style={{ left: pct(h) }} aria-hidden />
