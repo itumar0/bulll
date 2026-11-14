@@ -140,7 +140,7 @@ export function BookingForm({ today: serverToday }: { today: string }) {
   if (success) {
     return (
       <div className="card flex flex-col items-center p-8 text-center sm:p-12" role="status">
-        <span className="grid h-16 w-16 place-items-center rounded-full bg-red-600 shadow-glow">
+        <span className="grid h-16 w-16 place-items-center rounded-full bg-accent-600 shadow-glow">
           <CheckIcon className="h-8 w-8" />
         </span>
         <h3 className="mt-6 text-2xl font-extrabold sm:text-3xl">Бронь №{success.id} создана</h3>
@@ -324,7 +324,7 @@ export function BookingForm({ today: serverToday }: { today: string }) {
           <p className="mt-1 text-lg font-bold">
             {TABLE_META[tableId].name} · {formatDateHuman(date)}
           </p>
-          <p className="mt-0.5 text-2xl font-extrabold tabular-nums text-red-500">
+          <p className="mt-0.5 text-2xl font-extrabold tabular-nums text-accent-500">
             {start !== null ? `${minutesLabel(start)} – ${minutesLabel(start + duration * 60)}` : "—:— – —:—"}
           </p>
         </div>

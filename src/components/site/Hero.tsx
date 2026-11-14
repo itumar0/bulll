@@ -13,22 +13,22 @@ export function Hero({ whatsapp }: { whatsapp: string }) {
   return (
     <section aria-labelledby="hero-title" className="relative isolate overflow-hidden pt-28 pb-20 sm:pt-36 sm:pb-28">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-40 right-[-20%] h-[38rem] w-[38rem] rounded-full bg-red-600/25 blur-[120px]" />
-        <div className="absolute bottom-[-30%] left-[-20%] h-[28rem] w-[28rem] rounded-full bg-red-700/15 blur-[120px]" />
+        <div className="absolute -top-40 right-[-20%] h-[38rem] w-[38rem] rounded-full bg-accent-600/25 blur-[120px]" />
+        <div className="absolute bottom-[-30%] left-[-20%] h-[28rem] w-[28rem] rounded-full bg-accent-700/15 blur-[120px]" />
         <div className="grain absolute inset-0" />
-        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-red-500/40 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-accent-500/40 to-transparent" />
       </div>
 
       <div className="container-x grid items-center gap-12 lg:grid-cols-[1.2fr_0.8fr]">
         <div>
           <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-1.5 text-xs font-semibold text-soft">
-            <span className="h-1.5 w-1.5 rounded-full bg-red-500 shadow-glow-sm" aria-hidden />
+            <span className="h-1.5 w-1.5 rounded-full bg-accent-500 shadow-glow-sm" aria-hidden />
             {CLUB.city} · {CLUB.hoursLabel}
           </p>
           <h1 id="hero-title" className="text-[3.4rem] leading-[1.02] font-extrabold tracking-[-0.04em] sm:text-8xl lg:text-[7.5rem]">
             Бильярд
             <br />
-            <span className="bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(230,57,70,0.35)]">
+            <span className="bg-gradient-to-r from-accent-500 to-accent-600 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(34,197,94,0.35)]">
               СТАРТ
             </span>
           </h1>

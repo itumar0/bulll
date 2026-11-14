@@ -22,7 +22,7 @@ export function TablesGrid({ tables, now, onChanged }: { tables: TableStatusAdmi
           <li key={t.id} className={`flex flex-col rounded-2xl border p-4 ${th.card}`}>
             <div className="flex items-center justify-between">
               <h3 className="flex items-center gap-2 text-xl font-extrabold">
-                {t.type === "VIP" && <CrownIcon className="h-4 w-4 text-red-500" />} {t.name}
+                {t.type === "VIP" && <CrownIcon className="h-4 w-4 text-accent-500" />} {t.name}
               </h3>
               <span className={`flex items-center gap-1.5 text-xs font-bold ${th.text}`}>
                 <span className={`h-2 w-2 rounded-full ${th.dot} ${t.state !== "free" ? "animate-pulse-dot" : ""}`} aria-hidden />

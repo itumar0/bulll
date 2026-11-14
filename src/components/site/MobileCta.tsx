@@ -40,7 +40,7 @@ export function MobileCta({ whatsapp }: { whatsapp: string }) {
         <a
           href="#booking"
           tabIndex={visible ? 0 : -1}
-          className="flex h-12 flex-1 items-center justify-center rounded-xl bg-red-600 font-semibold shadow-glow active:scale-[0.98]"
+          className="flex h-12 flex-1 items-center justify-center rounded-xl bg-accent-600 font-semibold shadow-glow active:scale-[0.98]"
         >
           Забронировать стол
         </a>

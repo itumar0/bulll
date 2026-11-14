@@ -14,11 +14,11 @@ const nav = [
 export function Logo() {
   return (
     <Link href="/" className="group flex items-center gap-2.5">
-      <span aria-hidden className="relative grid h-9 w-9 place-items-center rounded-full bg-red-600 shadow-glow-sm transition-transform group-hover:rotate-12">
+      <span aria-hidden className="relative grid h-9 w-9 place-items-center rounded-full bg-accent-600 shadow-glow-sm transition-transform group-hover:rotate-12">
         <span className="grid h-4 w-4 place-items-center rounded-full bg-white text-[9px] font-black text-ink-950">8</span>
       </span>
       <span className="text-lg font-extrabold tracking-tight">
-        Бильярд <span className="text-red-500">Старт</span>
+        Бильярд <span className="text-accent-500">Старт</span>
         <span className="sr-only"> — на главную</span>
       </span>
     </Link>

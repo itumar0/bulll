@@ -47,7 +47,7 @@ export function TablesSection({ initial }: { initial: StatusResponse | null }) {
           )}
         </p>
         <p className="flex items-center gap-2 text-xs text-neutral-400">
-          <span className="h-1.5 w-1.5 animate-pulse-dot rounded-full bg-red-500" aria-hidden /> Обновляется автоматически
+          <span className="h-1.5 w-1.5 animate-pulse-dot rounded-full bg-accent-500" aria-hidden /> Обновляется автоматически
         </p>
       </div>
 
@@ -59,16 +59,16 @@ export function TablesSection({ initial }: { initial: StatusResponse | null }) {
               <button
                 type="button"
                 onClick={() => pick(t.id)}
-                className={`group card relative flex h-full w-full flex-col overflow-hidden p-4 text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-red-500/40 hover:shadow-glow sm:p-6 ${
-                  vip ? "bg-gradient-to-br from-ink-900 to-red-950/40" : ""
+                className={`group card relative flex h-full w-full flex-col overflow-hidden p-4 text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-accent-500/40 hover:shadow-glow sm:p-6 ${
+                  vip ? "bg-gradient-to-br from-ink-900 to-accent-950/40" : ""
                 }`}
               >
-                {vip && <div aria-hidden className="absolute -top-10 -right-10 h-28 w-28 rounded-full bg-red-600/20 blur-2xl" />}
+                {vip && <div aria-hidden className="absolute -top-10 -right-10 h-28 w-28 rounded-full bg-accent-600/20 blur-2xl" />}
                 <div className="mb-6 flex items-start justify-between gap-2">
                   <span className="text-xs font-bold tracking-[0.18em] text-neutral-400 uppercase">
                     {vip ? "VIP-комната" : "Бильярдный стол"}
                   </span>
-                  {vip && <CrownIcon className="h-4 w-4 text-red-500" />}
+                  {vip && <CrownIcon className="h-4 w-4 text-accent-500" />}
                 </div>
                 <span className="text-2xl font-extrabold tracking-tight sm:text-3xl">{t.name}</span>
                 <span className="mt-1 flex items-center gap-1.5 text-xs text-mute">
@@ -80,7 +80,7 @@ export function TablesSection({ initial }: { initial: StatusResponse | null }) {
                 <span className="mt-5 whitespace-nowrap">
                   <StatusBadge state={t.state} label={statusLabel(t)} />
                 </span>
-                <span className="mt-4 text-xs font-semibold text-red-400 transition-colors group-hover:text-red-300">
+                <span className="mt-4 text-xs font-semibold text-accent-400 transition-colors group-hover:text-accent-300">
                   Забронировать<span className="sr-only"> {t.name}</span> <span aria-hidden>→</span>
                 </span>
               </button>

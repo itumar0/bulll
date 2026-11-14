@@ -16,7 +16,7 @@ export default function OgImage() {
           flexDirection: "column",
           justifyContent: "center",
           padding: "80px",
-          background: "radial-gradient(circle at 80% 30%, #3a0509 0%, #0A0A0A 55%)",
+          background: "radial-gradient(circle at 80% 30%, #06301a 0%, #0A0A0A 55%)",
           color: "#fff",
         }}
       >
@@ -26,11 +26,11 @@ export default function OgImage() {
               width: 96,
               height: 96,
               borderRadius: 48,
-              background: "#C1121F",
+              background: "#15803D",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              boxShadow: "0 0 80px #E63946",
+              boxShadow: "0 0 80px #22C55E",
             }}
           >
             <div
@@ -50,7 +50,7 @@ export default function OgImage() {
               8
             </div>
           </div>
-          <div style={{ fontSize: 40, letterSpacing: 8, color: "#E63946", fontWeight: 700 }}>KARAKOL</div>
+          <div style={{ fontSize: 40, letterSpacing: 8, color: "#22C55E", fontWeight: 700 }}>KARAKOL</div>
         </div>
         <div style={{ fontSize: 120, fontWeight: 800, letterSpacing: -3, marginTop: 30 }}>BILLIARD START</div>
         <div style={{ fontSize: 40, color: "#a3a3a3", marginTop: 10 }}>6 tables · 2 VIP rooms · Karakol · 12:00 – 02:00</div>

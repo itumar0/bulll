@@ -112,7 +112,7 @@ export function AdminDashboard({ today }: { today: string }) {
                 aria-controls={`panel-${t.id}`}
                 id={`tab-${t.id}`}
                 onClick={() => setTab(t.id)}
-                className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${tab === t.id ? "bg-red-600 text-white shadow-glow-sm" : "text-mute hover:text-white"}`}
+                className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${tab === t.id ? "bg-accent-600 text-white shadow-glow-sm" : "text-mute hover:text-white"}`}
               >
                 {t.label}
               </button>

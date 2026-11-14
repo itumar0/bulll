@@ -12,12 +12,18 @@
   --color-mute: #a3a3a3;
   --color-soft: #d4d4d4;
 
-  --color-red-700: #9b0e19;
-  --color-red-600: #c1121f;
-  --color-red-500: #e63946;
+  /* Brand accent: billiard-felt green */
+  --color-accent-100: #dcfce7;
+  --color-accent-200: #bbf7d0;
+  --color-accent-300: #86efac;
+  --color-accent-400: #4ade80;
+  --color-accent-500: #22c55e;
+  --color-accent-600: #15803d;
+  --color-accent-700: #166534;
+  --color-accent-950: #052e16;
 
-  --shadow-glow: 0 0 0 1px rgb(230 57 70 / 0.35), 0 10px 40px -10px rgb(193 18 31 / 0.55);
-  --shadow-glow-sm: 0 0 24px -6px rgb(230 57 70 / 0.6);
+  --shadow-glow: 0 0 0 1px rgb(34 197 94 / 0.35), 0 10px 40px -10px rgb(21 128 61 / 0.6);
+  --shadow-glow-sm: 0 0 24px -6px rgb(34 197 94 / 0.6);
 
   --animate-pulse-dot: pulse-dot 2s ease-in-out infinite;
   @keyframes pulse-dot {
@@ -41,11 +47,11 @@
     text-rendering: optimizeLegibility;
   }
   ::selection {
-    background: var(--color-red-600);
+    background: var(--color-accent-600);
     color: #fff;
   }
   :focus-visible {
-    outline: 2px solid var(--color-red-500);
+    outline: 2px solid var(--color-accent-500);
     outline-offset: 3px;
     border-radius: 6px;
   }
@@ -70,7 +76,7 @@
     @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
   }
   .field {
-    @apply w-full rounded-xl border border-ink-700 bg-ink-900 px-4 py-3.5 text-base text-white placeholder:text-neutral-500 transition-colors outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500/30 disabled:opacity-50;
+    @apply w-full rounded-xl border border-ink-700 bg-ink-900 px-4 py-3.5 text-base text-white placeholder:text-neutral-500 transition-colors outline-none focus:border-accent-500 focus:ring-2 focus:ring-accent-500/30 disabled:opacity-50;
   }
   .label {
     @apply mb-2 block text-sm font-medium text-soft;
@@ -79,7 +85,7 @@
     @apply rounded-2xl border border-white/[0.07] bg-ink-900;
   }
   .chip {
-    @apply inline-flex min-h-11 whitespace-nowrap items-center justify-center rounded-xl border border-ink-700 bg-ink-900 px-1.5 text-[13px] sm:px-3 sm:text-sm font-semibold text-soft transition-all hover:border-ink-600 hover:text-white disabled:cursor-not-allowed disabled:border-transparent disabled:bg-ink-850 disabled:text-neutral-600 disabled:line-through aria-checked:border-red-500 aria-checked:bg-red-600/15 aria-checked:text-white aria-checked:shadow-glow-sm;
+    @apply inline-flex min-h-11 whitespace-nowrap items-center justify-center rounded-xl border border-ink-700 bg-ink-900 px-1.5 text-[13px] sm:px-3 sm:text-sm font-semibold text-soft transition-all hover:border-ink-600 hover:text-white disabled:cursor-not-allowed disabled:border-transparent disabled:bg-ink-850 disabled:text-neutral-600 disabled:line-through aria-checked:border-accent-500 aria-checked:bg-accent-600/15 aria-checked:text-white aria-checked:shadow-glow-sm;
   }
   .grain {
     background-image: radial-gradient(rgb(255 255 255 / 0.035) 1px, transparent 1px);

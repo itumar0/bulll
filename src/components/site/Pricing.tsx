@@ -26,13 +26,13 @@ export function Pricing() {
         <div
           key={p.name}
           className={`relative overflow-hidden rounded-3xl border p-7 sm:p-9 ${
-            p.vip ? "border-red-500/40 bg-gradient-to-br from-red-950/60 via-ink-900 to-ink-900 shadow-glow" : "border-white/[0.07] bg-ink-900"
+            p.vip ? "border-accent-500/40 bg-gradient-to-br from-accent-950/60 via-ink-900 to-ink-900 shadow-glow" : "border-white/[0.07] bg-ink-900"
           }`}
         >
           {p.vip && (
             <>
-              <div aria-hidden className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-red-600/25 blur-3xl" />
-              <span className="absolute top-6 right-6 inline-flex items-center gap-1.5 rounded-full bg-red-600 px-3 py-1 text-xs font-bold">
+              <div aria-hidden className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-accent-600/25 blur-3xl" />
+              <span className="absolute top-6 right-6 inline-flex items-center gap-1.5 rounded-full bg-accent-600 px-3 py-1 text-xs font-bold">
                 <CrownIcon className="h-3.5 w-3.5" /> Для компаний
               </span>
             </>
@@ -46,7 +46,7 @@ export function Pricing() {
           <ul className="mt-6 space-y-3">
             {p.features.map((f) => (
               <li key={f} className="flex items-center gap-3 text-sm text-soft">
-                <CheckIcon className="h-4 w-4 shrink-0 text-red-400" /> {f}
+                <CheckIcon className="h-4 w-4 shrink-0 text-accent-400" /> {f}
               </li>
             ))}
           </ul>

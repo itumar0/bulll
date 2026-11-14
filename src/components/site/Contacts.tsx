@@ -14,8 +14,8 @@ export function Contacts({ whatsapp }: { whatsapp: string }) {
   return (
     <ul className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
       {items.map(({ icon: Icon, ...it }) => (
-        <li key={it.title} className="card flex gap-4 p-5 transition-colors hover:border-red-500/30 sm:flex-col sm:gap-0 sm:p-6">
-          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-red-600/15 text-red-500 sm:mb-5">
+        <li key={it.title} className="card flex gap-4 p-5 transition-colors hover:border-accent-500/30 sm:flex-col sm:gap-0 sm:p-6">
+          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-accent-600/15 text-accent-500 sm:mb-5">
             <Icon />
           </span>
           <div className="flex min-w-0 flex-1 flex-col">
@@ -26,7 +26,7 @@ export function Contacts({ whatsapp }: { whatsapp: string }) {
             <a
               href={it.href}
               {...(it.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              className="mt-auto pt-3 text-sm font-semibold text-red-400 hover:text-red-300 sm:pt-4"
+              className="mt-auto pt-3 text-sm font-semibold text-accent-400 hover:text-accent-300 sm:pt-4"
             >
               {it.cta} →
             </a>

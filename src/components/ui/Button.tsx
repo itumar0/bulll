@@ -6,7 +6,7 @@ type Size = "md" | "lg" | "sm";
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-red-600 text-white hover:bg-red-500 shadow-glow hover:shadow-[0_0_0_1px_rgb(230_57_70/0.5),0_14px_50px_-10px_rgb(230_57_70/0.75)]",
+    "bg-accent-600 text-white hover:bg-accent-700 shadow-glow hover:shadow-[0_0_0_1px_rgb(34_197_94/0.5),0_14px_50px_-10px_rgb(34_197_94/0.7)]",
   outline: "border border-white/15 text-white hover:border-white/40 hover:bg-white/5",
   ghost: "text-soft hover:text-white hover:bg-white/5",
   whatsapp: "border border-white/15 text-white hover:border-[#25D366]/70 hover:bg-[#25D366]/10",

@@ -8,7 +8,7 @@ export function HeroBall() {
   return (
     <LazyMotion features={domAnimation} strict>
       <div aria-hidden className="relative mx-auto hidden aspect-square w-full max-w-sm lg:block">
-        <div className="absolute inset-8 rounded-full bg-red-600/30 blur-3xl" />
+        <div className="absolute inset-8 rounded-full bg-accent-600/30 blur-3xl" />
         <m.div
           className="relative h-full w-full"
           initial={reduce ? false : { opacity: 0, scale: 0.9, rotate: -20 }}
@@ -20,7 +20,7 @@ export function HeroBall() {
             y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
           }}
         >
-          <svg viewBox="0 0 200 200" className="h-full w-full drop-shadow-[0_30px_60px_rgba(193,18,31,0.45)]">
+          <svg viewBox="0 0 200 200" className="h-full w-full drop-shadow-[0_30px_60px_rgba(21,128,61,0.5)]">
             <defs>
               <radialGradient id="ball" cx="35%" cy="30%" r="75%">
                 <stop offset="0%" stopColor="#3a3a3a" />
@@ -29,7 +29,7 @@ export function HeroBall() {
               </radialGradient>
               <radialGradient id="rim" cx="50%" cy="50%" r="50%">
                 <stop offset="80%" stopColor="transparent" />
-                <stop offset="100%" stopColor="#E63946" stopOpacity="0.55" />
+                <stop offset="100%" stopColor="#22C55E" stopOpacity="0.55" />
               </radialGradient>
             </defs>
             <circle cx="100" cy="100" r="96" fill="url(#ball)" />

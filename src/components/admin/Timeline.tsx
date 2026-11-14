@@ -12,7 +12,7 @@ const HOURS = Array.from({ length: SPAN / 60 + 1 }, (_, i) => OPEN_MIN + i * 60)
 
 const barStyle: Record<BookingStatus, string> = {
   PENDING: "bg-amber-400/25 border-amber-400/60 text-amber-100",
-  CONFIRMED: "bg-red-600/40 border-red-500/70 text-white",
+  CONFIRMED: "bg-accent-600/40 border-accent-500/70 text-white",
   COMPLETED: "bg-white/10 border-white/20 text-mute",
   CANCELLED: "hidden",
 };
@@ -41,7 +41,7 @@ export function Timeline({
         <label htmlFor="tl-date" className="text-sm text-mute">Дата</label>
         <input id="tl-date" type="date" className="field w-auto py-2.5" value={date} onChange={(e) => e.target.value && setDate(e.target.value)} />
         <span className="flex items-center gap-3 text-xs text-mute">
-          <span className="flex items-center gap-1"><i className="h-3 w-3 rounded bg-red-600/60" /> подтверждена</span>
+          <span className="flex items-center gap-1"><i className="h-3 w-3 rounded bg-accent-600/60" /> подтверждена</span>
           <span className="flex items-center gap-1"><i className="h-3 w-3 rounded bg-amber-400/50" /> ожидает</span>
           <span className="flex items-center gap-1"><i className="h-3 w-3 rounded bg-white/20" /> завершена</span>
         </span>
@@ -90,7 +90,7 @@ export function Timeline({
             ))}
             {nowMin >= OPEN_MIN && nowMin <= CLOSE_MIN && (
               <div className="pointer-events-none absolute inset-y-0 right-0 left-20" aria-hidden>
-                <div className="absolute inset-y-0 w-0.5 bg-red-500 shadow-glow-sm" style={{ left: pct(nowMin) }} />
+                <div className="absolute inset-y-0 w-0.5 bg-accent-500 shadow-glow-sm" style={{ left: pct(nowMin) }} />
               </div>
             )}
           </div>

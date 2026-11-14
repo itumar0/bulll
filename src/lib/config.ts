@@ -7,15 +7,14 @@ export const CLUB = {
     "«Бильярд Старт» — бильярдный клуб в Караколе: 6 профессиональных столов и 2 VIP-комнаты. Онлайн-бронирование за минуту, ответ в WhatsApp.",
   city: "Каракол",
   address: "г. Каракол",
-  /** 2GIS: search in Karakol. Replace with the club's exact 2GIS card link when available. */
-  mapUrl: "https://2gis.kg/karakol/search/%D0%91%D0%B8%D0%BB%D1%8C%D1%8F%D1%80%D0%B4%20%D0%A1%D1%82%D0%B0%D1%80%D1%82",
+  mapUrl: "https://2gis.kg/bishkek/geo/70030076631151014/78.390321,42.489646",
   phoneDisplay: "+996 (506) 056-556",
   phoneHref: "tel:+996506056556",
   instagram: "https://www.instagram.com/starbilliard.karakol/",
   instagramHandle: "@starbilliard.karakol",
   hoursLabel: "Ежедневно 12:00 – 02:00",
-  priceRegular: 600,
-  priceVip: 1500,
+  priceRegular: 250,
+  priceVip: 350,
 } as const;
 
 /** Working hours, in minutes from the business day's midnight (Asia/Bishkek). */
