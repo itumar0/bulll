@@ -212,3 +212,87 @@ function booking_public_admin(array $b): array
         'createdAt' => iso(from_db($b['created_at'])),
     ];
 }
+
+/**
+ * Admin list of bookings. Filters: date (local day, overlap), tableId, status, q (name or phone digits).
+ * @return array<int,array<string,mixed>> rows from the DB
+ */
+function list_bookings(array $f): array
+{
+    $where = [];
+    $params = [];
+    $date = (string) ($f['date'] ?? '');
+    if ($date !== '') {
+        if (!is_valid_date($date)) throw new BookingError('Некорректная дата');
+        // Bookings overlapping the local calendar day (incl. ones that started before midnight).
+        $where[] = 'start_at < ? AND end_at > ?';
+        $params[] = db_dt(local_to_utc($date, 24 * 60));
+        $params[] = db_dt(local_to_utc($date, 0));
+    }
+    $tableId = (string) ($f['tableId'] ?? '');
+    if ($tableId !== '') {
+        if (!isset(TABLES[$tableId])) throw new BookingError('Некорректный стол');
+        $where[] = 'table_id = ?';
+        $params[] = $tableId;
+    }
+    $status = (string) ($f['status'] ?? '');
+    if ($status !== '') {
+        if (!in_array($status, STATUSES, true)) throw new BookingError('Некорректный статус');
+        $where[] = 'status = ?';
+        $params[] = $status;
+    }
+    $q = sanitize_text(mb_substr((string) ($f['q'] ?? ''), 0, 60));
+    if ($q !== '') {
+        $digits = preg_replace('/\D/', '', $q);
+        $cond = 'name LIKE ?';
+        $params[] = '%' . addcslashes($q, '%_\\') . '%';
+        if (strlen($digits) >= 3) {
+            $cond .= ' OR phone LIKE ?';
+            $params[] = '%' . $digits . '%';
+        }
+        $where[] = '(' . $cond . ')';
+    }
+    $sql = 'SELECT * FROM bookings' . ($where ? ' WHERE ' . implode(' AND ', $where) : '')
+        . ' ORDER BY start_at ' . ($date !== '' ? 'ASC' : 'DESC') . ' LIMIT 500';
+    $st = db()->prepare($sql);
+    $st->execute($params);
+    return $st->fetchAll();
+}
+
+/** Validate input for a manual (walk-in) booking. Throws ValidationError. */
+function validate_manual_booking(array $raw): array
+{
+    return (new Validator($raw, ['name', 'phone', 'tableId', 'date', 'startMinutes', 'startNow', 'durationHours', 'guests', 'comment']))
+        ->name()->phone()->tableId()->date('date', true)
+        ->int('startMinutes', 0, LAST_START_MIN, 'Некорректное время', SLOT_MIN, true)
+        ->bool('startNow')
+        ->number('durationHours', 0.5, MAX_DURATION_H, 0.5, 'От 30 минут до 5 часов')
+        ->int('guests', 1, 10, 'От 1 до 10 гостей')
+        ->text('comment', 500)
+        ->result();
+}
+
+/** Create a confirmed booking made by the admin (starts now or at a chosen time). */
+function create_manual_booking(array $in): array
+{
+    if (!empty($in['startNow']) || !isset($in['startMinutes'])) {
+        $now = now_utc();
+        $start = $now->setTime((int) $now->format('H'), (int) $now->format('i'));
+    } else {
+        $start = local_to_utc($in['date'] ?? today_local(), $in['startMinutes']);
+    }
+    $end = $start->modify('+' . (int) round($in['durationHours'] * 60) . ' minutes');
+    return create_booking([
+        'tableId' => $in['tableId'], 'name' => $in['name'], 'phone' => $in['phone'], 'guests' => $in['guests'],
+        'comment' => $in['comment'], 'startAt' => $start, 'endAt' => $end, 'status' => 'CONFIRMED', 'source' => 'ADMIN',
+    ]);
+}
+
+/** Message the admin sends to a client from the panel. */
+function client_message(array $b): string
+{
+    $s = from_db($b['start_at']);
+    $e = from_db($b['end_at']);
+    return 'Здравствуйте, ' . $b['name'] . '! Это «' . CLUB['name'] . '». По вашей брони №' . $b['id'] . ': '
+        . (TABLES[$b['table_id']]['name'] ?? $b['table_id']) . ', ' . fmt_date($s) . ', ' . fmt_time($s) . ' – ' . fmt_time($e) . '.';
+}

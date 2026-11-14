@@ -32,7 +32,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     redirect('admin/logo.php');
 }
 
-admin_page_start('Логотип');
+admin_page_start('Логотип', 'logo');
 ?>
 <h1 class="mb-2 text-3xl font-extrabold tracking-tight">Логотип</h1>
 <p class="mb-6 text-sm text-mute">Показывается в шапке сайта, на первом экране, во вкладке браузера и на иконке телефона.</p>
