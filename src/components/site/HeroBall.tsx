@@ -1,17 +1,18 @@
 "use client";
 
+import Image from "next/image";
 import { LazyMotion, domAnimation, m, useReducedMotion } from "framer-motion";
 
-/** Decorative floating 8-ball. Hidden from assistive tech. */
+/** Club logo with a soft green glow, gently floating. Decorative (the name is in the H1). */
 export function HeroBall() {
   const reduce = useReducedMotion();
   return (
     <LazyMotion features={domAnimation} strict>
       <div aria-hidden className="relative mx-auto hidden aspect-square w-full max-w-sm lg:block">
-        <div className="absolute inset-8 rounded-full bg-accent-600/30 blur-3xl" />
+        <div className="absolute inset-6 rounded-full bg-accent-600/35 blur-3xl" />
         <m.div
           className="relative h-full w-full"
-          initial={reduce ? false : { opacity: 0, scale: 0.9, rotate: -20 }}
+          initial={reduce ? false : { opacity: 0, scale: 0.9, rotate: -8 }}
           animate={{ opacity: 1, scale: 1, rotate: 0, y: reduce ? 0 : [0, -14, 0] }}
           transition={{
             opacity: { duration: 0.8 },
@@ -20,26 +21,14 @@ export function HeroBall() {
             y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
           }}
         >
-          <svg viewBox="0 0 200 200" className="h-full w-full drop-shadow-[0_30px_60px_rgba(21,128,61,0.5)]">
-            <defs>
-              <radialGradient id="ball" cx="35%" cy="30%" r="75%">
-                <stop offset="0%" stopColor="#3a3a3a" />
-                <stop offset="45%" stopColor="#141414" />
-                <stop offset="100%" stopColor="#000" />
-              </radialGradient>
-              <radialGradient id="rim" cx="50%" cy="50%" r="50%">
-                <stop offset="80%" stopColor="transparent" />
-                <stop offset="100%" stopColor="#22C55E" stopOpacity="0.55" />
-              </radialGradient>
-            </defs>
-            <circle cx="100" cy="100" r="96" fill="url(#ball)" />
-            <circle cx="100" cy="100" r="96" fill="url(#rim)" />
-            <circle cx="88" cy="84" r="36" fill="#fff" />
-            <text x="88" y="98" textAnchor="middle" fontSize="40" fontWeight="800" fill="#0A0A0A" fontFamily="Manrope Variable, sans-serif">
-              8
-            </text>
-            <ellipse cx="62" cy="48" rx="22" ry="11" fill="#fff" opacity="0.12" transform="rotate(-30 62 48)" />
-          </svg>
+          <Image
+            src="/logo-512.webp"
+            alt=""
+            width={512}
+            height={512}
+            sizes="384px"
+            className="h-full w-full rounded-full shadow-[0_0_0_1px_rgb(34_197_94/0.35),0_30px_80px_-20px_rgb(21_128_61/0.7)]"
+          />
         </m.div>
       </div>
     </LazyMotion>

@@ -40,8 +40,7 @@ function icon(string $name, string $class = 'h-5 w-5'): string
 function logo_html(): string
 {
     return '<a href="' . e(base_path()) . '" class="group flex items-center gap-2.5">'
-        . '<span aria-hidden="true" class="relative grid h-9 w-9 place-items-center rounded-full bg-accent-600 shadow-glow-sm transition-transform group-hover:rotate-12">'
-        . '<span class="grid h-4 w-4 place-items-center rounded-full bg-white text-[9px] font-black text-ink-950">8</span></span>'
+        . '<img src="' . e(base_path()) . 'assets/logo-96.webp" alt="" width="40" height="40" class="h-10 w-10 rounded-full shadow-glow-sm ring-1 ring-white/10 transition-transform group-hover:rotate-6">'
         . '<span class="text-lg font-extrabold tracking-tight">Бильярд <span class="text-accent-500">Старт</span><span class="sr-only"> — на главную</span></span></a>';
 }
 

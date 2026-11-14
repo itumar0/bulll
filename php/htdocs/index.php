@@ -95,18 +95,8 @@ require __DIR__ . '/includes/views/head.php';
         </dl>
       </div>
       <div aria-hidden="true" class="relative mx-auto hidden aspect-square w-full max-w-sm lg:block">
-        <div class="absolute inset-8 rounded-full bg-accent-600/30 blur-3xl"></div>
-        <svg viewBox="0 0 200 200" class="ball-float relative h-full w-full">
-          <defs>
-            <radialGradient id="ball" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#3a3a3a"/><stop offset="45%" stop-color="#141414"/><stop offset="100%" stop-color="#000"/></radialGradient>
-            <radialGradient id="rim" cx="50%" cy="50%" r="50%"><stop offset="80%" stop-color="transparent"/><stop offset="100%" stop-color="#22C55E" stop-opacity="0.55"/></radialGradient>
-          </defs>
-          <circle cx="100" cy="100" r="96" fill="url(#ball)"/>
-          <circle cx="100" cy="100" r="96" fill="url(#rim)"/>
-          <circle cx="88" cy="84" r="36" fill="#fff"/>
-          <text x="88" y="98" text-anchor="middle" font-size="40" font-weight="800" fill="#0A0A0A" font-family="Manrope, sans-serif">8</text>
-          <ellipse cx="62" cy="48" rx="22" ry="11" fill="#fff" opacity="0.12" transform="rotate(-30 62 48)"/>
-        </svg>
+        <div class="absolute inset-6 rounded-full bg-accent-600/35 blur-3xl"></div>
+        <img src="<?= e(base_path()) ?>assets/logo-512.webp" alt="" width="512" height="512" class="ball-float relative h-full w-full rounded-full shadow-glow">
       </div>
     </div>
   </section>

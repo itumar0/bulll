@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { CLUB } from "@/lib/config";
 import { buttonClass } from "../ui/Button";
@@ -14,9 +15,14 @@ const nav = [
 export function Logo() {
   return (
     <Link href="/" className="group flex items-center gap-2.5">
-      <span aria-hidden className="relative grid h-9 w-9 place-items-center rounded-full bg-accent-600 shadow-glow-sm transition-transform group-hover:rotate-12">
-        <span className="grid h-4 w-4 place-items-center rounded-full bg-white text-[9px] font-black text-ink-950">8</span>
-      </span>
+      <Image
+        src="/logo-96.webp"
+        alt=""
+        width={40}
+        height={40}
+        priority
+        className="h-10 w-10 rounded-full shadow-glow-sm ring-1 ring-white/10 transition-transform group-hover:rotate-6"
+      />
       <span className="text-lg font-extrabold tracking-tight">
         Бильярд <span className="text-accent-500">Старт</span>
         <span className="sr-only"> — на главную</span>
