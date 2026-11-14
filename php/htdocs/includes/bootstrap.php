@@ -19,6 +19,7 @@ require __DIR__ . '/security.php';
 require __DIR__ . '/validation.php';
 require __DIR__ . '/booking.php';
 require __DIR__ . '/whatsapp.php';
+require __DIR__ . '/logo.php';
 
 function cfg(string $key)
 {

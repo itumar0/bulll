@@ -29,9 +29,12 @@ $noindex ??= false;
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <?php endif; ?>
+<?php if (!has_custom_logo()): ?>
 <link rel="icon" href="<?= e(base_path()) ?>assets/favicon.ico" sizes="any">
-<link rel="icon" href="<?= e(base_path()) ?>assets/favicon-32.png" type="image/png" sizes="32x32">
-<link rel="apple-touch-icon" href="<?= e(base_path()) ?>assets/apple-icon.png">
+<?php endif; ?>
+<link rel="icon" href="<?= e(logo_url('favicon-32')) ?>" type="image/png" sizes="32x32">
+<link rel="icon" href="<?= e(logo_url('icon-192')) ?>" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="<?= e(logo_url('apple-icon')) ?>">
 <link rel="preload" href="<?= e(base_path()) ?>assets/fonts/manrope-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="<?= e(asset('app.css')) ?>">
 <script src="<?= e(asset('boot.js')) ?>"></script>

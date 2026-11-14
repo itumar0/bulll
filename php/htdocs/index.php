@@ -96,7 +96,7 @@ require __DIR__ . '/includes/views/head.php';
       </div>
       <div aria-hidden="true" class="relative mx-auto hidden aspect-square w-full max-w-sm lg:block">
         <div class="absolute inset-6 rounded-full bg-accent-600/35 blur-3xl"></div>
-        <img src="<?= e(base_path()) ?>assets/logo-512.webp" alt="" width="512" height="512" class="ball-float relative h-full w-full rounded-full shadow-glow">
+        <img src="<?= e(logo_url('logo-512')) ?>" alt="" width="512" height="512" class="ball-float relative h-full w-full rounded-full shadow-glow">
       </div>
     </div>
   </section>

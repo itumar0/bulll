@@ -124,6 +124,22 @@ function csrf_token(): string
     return $_SESSION['csrf'] ??= bin2hex(random_bytes(32));
 }
 
+/**
+ * For classic HTML form posts in /admin: same origin + CSRF token from a hidden field.
+ * Returns false instead of exiting, so the page can show an error.
+ */
+function form_post_is_valid(): bool
+{
+    $host = strtolower($_SERVER['HTTP_HOST'] ?? '');
+    $source = $_SERVER['HTTP_ORIGIN'] ?? ($_SERVER['HTTP_REFERER'] ?? '');
+    $srcHost = strtolower((string) parse_url($source, PHP_URL_HOST));
+    $srcPort = parse_url($source, PHP_URL_PORT);
+    if ($srcPort) $srcHost .= ':' . $srcPort;
+    if ($source === '' || $srcHost !== $host) return false;
+    $sent = $_POST['csrf'] ?? '';
+    return is_string($sent) && hash_equals(csrf_token(), $sent);
+}
+
 /** For admin API endpoints: valid session + (for POST) same origin and CSRF header. */
 function require_admin_api(): void
 {
