@@ -21,17 +21,19 @@ $bar = [
 admin_page_start('Таймлайн', 'timeline', true);
 echo flash_html();
 ?>
+<h1 class="mb-4 text-2xl font-extrabold tracking-tight">Таймлайн</h1>
 <div class="mb-4 flex flex-wrap items-center gap-2">
-  <h1 class="mr-2 text-2xl font-extrabold tracking-tight">Таймлайн</h1>
-  <a href="?date=<?= e($prev) ?>" class="<?= btn_class('ghost', 'sm') ?>" aria-label="Предыдущий день">←</a>
-  <form method="get" class="flex items-center gap-2">
-    <label class="sr-only" for="tl-date">Дата</label>
-    <input id="tl-date" name="date" type="date" class="field w-auto py-2" value="<?= e($date) ?>" data-autosubmit>
-    <noscript><button class="<?= btn_class('outline', 'sm') ?>">Показать</button></noscript>
-  </form>
-  <a href="?date=<?= e($next) ?>" class="<?= btn_class('ghost', 'sm') ?>" aria-label="Следующий день">→</a>
-  <a href="?date=<?= e(today_local()) ?>" class="<?= btn_class('ghost', 'sm') ?>">Сегодня</a>
-  <span class="ml-auto flex items-center gap-3 text-xs text-mute">
+  <div class="flex w-full items-center gap-2 sm:w-auto">
+    <a href="?date=<?= e($prev) ?>" class="<?= btn_class('outline', 'sm', 'h-11 w-11 shrink-0 px-0') ?>" aria-label="Предыдущий день">←</a>
+    <form method="get" class="flex min-w-0 flex-1 items-center gap-2">
+      <label class="sr-only" for="tl-date">Дата</label>
+      <input id="tl-date" name="date" type="date" class="field min-w-0 px-3 py-2" value="<?= e($date) ?>" data-autosubmit>
+      <noscript><button class="<?= btn_class('outline', 'sm') ?>">Показать</button></noscript>
+    </form>
+    <a href="?date=<?= e($next) ?>" class="<?= btn_class('outline', 'sm', 'h-11 w-11 shrink-0 px-0') ?>" aria-label="Следующий день">→</a>
+    <a href="?date=<?= e(today_local()) ?>" class="<?= btn_class('ghost', 'sm', 'h-11 shrink-0') ?>">Сегодня</a>
+  </div>
+  <span class="flex flex-wrap items-center gap-3 text-xs text-mute sm:ml-auto">
     <span class="flex items-center gap-1"><i class="h-3 w-3 rounded bg-accent-600/60"></i> подтверждена</span>
     <span class="flex items-center gap-1"><i class="h-3 w-3 rounded bg-amber-400/50"></i> ожидает</span>
     <span class="flex items-center gap-1"><i class="h-3 w-3 rounded bg-white/20"></i> завершена</span>
@@ -39,7 +41,7 @@ echo flash_html();
 </div>
 
 <div id="live" data-live>
-  <div class="overflow-x-auto rounded-2xl border border-white/[0.07] bg-ink-900">
+  <div class="overflow-x-auto rounded-2xl border border-white/[0.07] bg-ink-900" data-tl-scroll="<?= $nowMin >= 0 && $nowMin <= 1440 ? $nowMin : ($rows ? max(0, (int) floor((from_db(reset($rows)['start_at'])->getTimestamp() - $dayStart) / 60)) : 720) ?>">
     <div class="relative min-w-[1440px] p-4">
       <div class="relative ml-20 h-6 text-[11px] text-neutral-400">
         <?php for ($h = 0; $h <= 24; $h++): ?>
@@ -76,6 +78,6 @@ echo flash_html();
       </div>
     </div>
   </div>
-  <p class="mt-3 text-xs text-neutral-400">Нажмите на бронь, чтобы открыть её в списке с кнопками действий.</p>
+  <p class="mt-3 text-xs text-neutral-400">Листайте шкалу вбок. Нажмите на бронь, чтобы открыть её в списке с кнопками действий.</p>
 </div>
 <?php admin_page_end();

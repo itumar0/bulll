@@ -59,15 +59,42 @@ function create_booking(array $a): array
         if (find_conflict($pdo, $a['tableId'], $a['startAt'], $a['endAt'])) {
             throw new BookingError('Это время уже занято. Выберите другой слот или стол.', 409, 'startMinutes');
         }
-        $pdo->prepare('INSERT INTO bookings (table_id, name, phone, guests, comment, start_at, end_at, status, source)
-                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)')
+        $insert = fn () => $pdo->prepare('INSERT INTO bookings (table_id, name, phone, guests, comment, start_at, end_at, status, source, price_per_hour)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
             ->execute([
                 $a['tableId'], $a['name'], $a['phone'], $a['guests'], $a['comment'] ?: null,
-                db_dt($a['startAt']), db_dt($a['endAt']), $a['status'], $a['source'],
+                db_dt($a['startAt']), db_dt($a['endAt']), $a['status'], $a['source'], table_price($a['tableId']),
             ]);
+        try {
+            $insert();
+        } catch (PDOException $e) {
+            // Databases created before reports existed: add the column once, then retry.
+            if (($e->errorInfo[1] ?? 0) !== 1054) throw $e;
+            ensure_price_column();
+            $insert();
+        }
         return (int) $pdo->lastInsertId();
     });
     return get_booking($id);
+}
+
+/** Current price per hour for a table (som). */
+function table_price(string $tableId): int
+{
+    return (TABLES[$tableId]['type'] ?? 'REGULAR') === 'VIP' ? (int) CLUB['price_vip'] : (int) CLUB['price_regular'];
+}
+
+/** Adds bookings.price_per_hour on databases created before reports existed (idempotent). */
+function ensure_price_column(): void
+{
+    static $done = false;
+    if ($done) return;
+    $st = db()->prepare("SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name = 'bookings' AND column_name = 'price_per_hour'");
+    $st->execute();
+    if ((int) $st->fetchColumn() === 0) {
+        db()->exec('ALTER TABLE bookings ADD COLUMN price_per_hour INT UNSIGNED NULL AFTER source');
+    }
+    $done = true;
 }
 
 /** Website booking interval: local date + start minutes. Club is open 24/7. */

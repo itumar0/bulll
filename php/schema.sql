@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS bookings (
   end_at     DATETIME     NOT NULL,          -- UTC
   status     VARCHAR(10)  NOT NULL DEFAULT 'PENDING', -- PENDING | CONFIRMED | COMPLETED | CANCELLED
   source     VARCHAR(10)  NOT NULL DEFAULT 'WEBSITE', -- WEBSITE | ADMIN
+  price_per_hour INT UNSIGNED NULL,           -- price at the moment of booking (som/hour), for reports
   created_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id),

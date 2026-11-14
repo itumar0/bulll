@@ -277,9 +277,9 @@
         if (first) first.focus();
         return;
       }
-      var btn = $('#bf-submit');
+      var btn = $('#bf-submit'), btnLabel = $('[data-label]', btn);
       btn.disabled = true;
-      btn.textContent = 'Сохраняем…';
+      btnLabel.textContent = 'Сохраняем…';
       var payload = { name: name, phone: phone, tableId: state.table, date: state.date, startMinutes: state.start, durationHours: state.duration, guests: guests, website: $('#bf-website').value };
       var comment = $('#bf-comment').value.trim();
       if (comment) payload.comment = comment;
@@ -304,7 +304,7 @@
           setTimeout(function () { window.location.href = res.json.waUrl; }, 900);
         })
         .catch(function () { formError('Нет соединения с сервером. Проверьте интернет.'); })
-        .then(function () { btn.disabled = false; btn.textContent = 'Забронировать и отправить в WhatsApp'; });
+        .then(function () { btn.disabled = false; btnLabel.textContent = 'Забронировать'; });
     });
 
     $('#booking-again').addEventListener('click', function () {

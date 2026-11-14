@@ -142,7 +142,7 @@ require __DIR__ . '/includes/views/head.php';
             <button type="button" data-pick-table="<?= e($id) ?>" class="group card relative flex h-full w-full flex-col overflow-hidden p-4 text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-accent-500/40 hover:shadow-glow sm:p-6 <?= $vip ? 'bg-gradient-to-br from-ink-900 to-accent-950/40' : '' ?>">
               <?php if ($vip): ?><span aria-hidden="true" class="absolute -top-10 -right-10 h-28 w-28 rounded-full bg-accent-600/20 blur-2xl"></span><?php endif; ?>
               <span class="mb-6 flex items-start justify-between gap-2">
-                <span class="text-xs font-bold tracking-[0.18em] text-neutral-400 uppercase"><?= $vip ? 'VIP-комната' : 'Бильярдный стол' ?></span>
+                <span class="text-[11px] font-bold tracking-[0.14em] text-neutral-400 uppercase sm:text-xs sm:tracking-[0.18em]"><?= $vip ? 'VIP-комната' : 'Стандарт' ?></span>
                 <?php if ($vip): ?><?= icon('crown', 'h-4 w-4 text-accent-500') ?><?php endif; ?>
               </span>
               <span class="text-2xl font-extrabold tracking-tight sm:text-3xl"><?= e($t['name']) ?></span>
@@ -231,19 +231,19 @@ require __DIR__ . '/includes/views/head.php';
             </div>
           </fieldset>
 
-          <div class="grid grid-cols-2 gap-5">
-            <div>
+          <div class="grid grid-cols-[minmax(0,1fr)_8.5rem] gap-3 sm:grid-cols-2 sm:gap-5">
+            <div class="min-w-0">
               <label for="bf-date" class="label">Дата</label>
-              <input id="bf-date" name="date" type="date" class="field" required>
+              <input id="bf-date" name="date" type="date" class="field min-w-0 px-3 sm:px-4" required>
               <p class="mt-2 text-xs text-neutral-400" id="bf-date-human"></p>
               <p class="field-error hidden" data-error-for="date" role="alert"></p>
             </div>
             <div>
               <label for="bf-guests" class="label">Гостей</label>
               <div class="flex h-[54px] items-center rounded-xl border border-ink-700 bg-ink-900">
-                <button type="button" class="h-full w-12 text-xl text-soft hover:text-white disabled:opacity-30" data-guests="-1" aria-label="Меньше гостей">−</button>
+                <button type="button" class="h-full w-11 shrink-0 text-xl text-soft hover:text-white disabled:opacity-30" data-guests="-1" aria-label="Меньше гостей">−</button>
                 <input id="bf-guests" name="guests" type="number" inputmode="numeric" min="1" max="6" value="2" class="number-plain h-full w-full min-w-0 bg-transparent text-center font-bold tabular-nums outline-none">
-                <button type="button" class="h-full w-12 text-xl text-soft hover:text-white disabled:opacity-30" data-guests="1" aria-label="Больше гостей">+</button>
+                <button type="button" class="h-full w-11 shrink-0 text-xl text-soft hover:text-white disabled:opacity-30" data-guests="1" aria-label="Больше гостей">+</button>
               </div>
               <p class="mt-2 text-xs text-neutral-400">максимум <span id="bf-capacity">6</span></p>
               <p class="field-error hidden" data-error-for="guests" role="alert"></p>
@@ -286,8 +286,8 @@ require __DIR__ . '/includes/views/head.php';
 
           <p id="bf-form-error" role="alert" class="hidden rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"></p>
 
-          <button type="submit" class="<?= btn_class('primary', 'lg', 'w-full') ?>" id="bf-submit">Забронировать и отправить в WhatsApp</button>
-          <p class="-mt-3 text-center text-xs text-neutral-400">Нажимая кнопку, вы соглашаетесь на обработку персональных данных для связи по брони.</p>
+          <button type="submit" class="<?= btn_class('primary', 'lg', 'w-full') ?>" id="bf-submit"><?= icon('whatsapp') ?> <span data-label>Забронировать</span></button>
+          <p class="-mt-3 text-center text-xs text-neutral-400">После нажатия откроется WhatsApp с готовым сообщением. Нажимая кнопку, вы соглашаетесь на обработку персональных данных для связи по брони.</p>
         </div>
       </form>
     </div>
@@ -329,7 +329,7 @@ require __DIR__ . '/includes/views/head.php';
             ['pin', 'Адрес', CLUB['address'], null, CLUB['map_url'], 'Открыть в 2ГИС'],
             ['clock', 'Часы работы', CLUB['hours_label'], 'Без выходных и перерывов', null, null],
             ['phone', 'Телефон', CLUB['phone_display'], null, CLUB['phone_href'], 'Позвонить'],
-            ['whatsapp', 'WhatsApp', '+' . $wa, null, wa_link($wa), 'Написать'],
+            ['whatsapp', 'WhatsApp', pretty_phone('+' . $wa), null, wa_link($wa), 'Написать'],
             ['instagram', 'Instagram', CLUB['instagram_handle'], 'Фото зала, турниры и акции', CLUB['instagram'], 'Подписаться'],
             ['map', '2ГИС', 'Маршрут до клуба', 'Отзывы и как добраться', CLUB['map_url'], 'Построить маршрут'],
         ] as [$ic, $title, $value, $sub, $href, $cta]): ?>
@@ -340,7 +340,7 @@ require __DIR__ . '/includes/views/head.php';
               <p class="mt-1 text-lg leading-snug font-bold break-words"><?= e($value) ?></p>
               <?php if ($sub): ?><p class="mt-1 text-sm text-neutral-400"><?= e($sub) ?></p><?php endif; ?>
               <?php if ($href): ?>
-                <a href="<?= e($href) ?>"<?= str_starts_with($href, 'http') ? ' target="_blank" rel="noopener noreferrer"' : '' ?> class="mt-auto pt-3 text-sm font-semibold text-accent-400 hover:text-accent-300 sm:pt-4"><?= e($cta) ?> →</a>
+                <a href="<?= e($href) ?>"<?= str_starts_with($href, 'http') ? ' target="_blank" rel="noopener noreferrer"' : '' ?> class="mt-auto inline-flex min-h-10 items-center self-start pt-2 text-sm font-semibold text-accent-400 hover:text-accent-300 sm:pt-3"><?= e($cta) ?> →</a>
               <?php endif; ?>
             </div>
           </li>

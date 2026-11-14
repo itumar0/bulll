@@ -26,3 +26,10 @@ function pretty_phone(string $normalized): string
     $d = phone_digits($normalized);
     return sprintf('+996 (%s) %s-%s', substr($d, 0, 3), substr($d, 3, 3), substr($d, 6, 3));
 }
+
+/** Local format 0XXX XXX XXX (Excel-friendly: no leading "+"). */
+function local_phone(string $normalized): string
+{
+    $d = phone_digits($normalized);
+    return '0' . substr($d, 0, 3) . ' ' . substr($d, 3, 3) . ' ' . substr($d, 6, 3);
+}

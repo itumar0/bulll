@@ -6,6 +6,7 @@ const ADMIN_PAGES = [
     'index'    => ['admin/', 'Столы'],
     'bookings' => ['admin/bookings.php', 'Брони'],
     'timeline' => ['admin/timeline.php', 'Таймлайн'],
+    'reports'  => ['admin/reports.php', 'Отчёты'],
     'new'      => ['admin/new.php', '+ Бронь'],
     'logo'     => ['admin/logo.php', 'Логотип'],
 ];
@@ -31,15 +32,15 @@ function admin_page_start(string $title, string $active = '', bool $wide = false
     echo '<body class="min-h-dvh bg-ink-950 text-white" data-base="' . e(base_path()) . '">';
     if (is_admin()) {
         echo '<header class="sticky top-0 z-40 border-b border-white/[0.06] bg-ink-950/85 backdrop-blur-xl">'
-            . '<div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">' . logo_html()
+            . '<div class="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6">' . logo_html()
             . '<div class="flex items-center gap-3 text-sm"><span class="hidden text-mute tabular-nums sm:inline">' . e(fmt_date(now_utc()) . ' · ' . fmt_time(now_utc())) . '</span>'
             . '<form method="post" action="' . e(base_path()) . 'admin/logout.php">' . csrf_field()
             . '<button class="rounded-lg px-3 py-2 text-mute hover:bg-white/5 hover:text-white" type="submit">Выйти</button></form></div></div>'
-            . '<nav aria-label="Разделы" class="mx-auto max-w-7xl overflow-x-auto px-4 pb-3 sm:px-6"><ul class="flex gap-1">';
+            . '<nav aria-label="Разделы" class="mx-auto max-w-7xl px-3 pb-3 sm:px-6"><ul class="grid grid-cols-3 gap-1 sm:flex">';
         foreach (ADMIN_PAGES as $key => [$href, $label]) {
             $on = $key === $active;
             echo '<li><a href="' . e(base_path() . $href) . '"' . ($on ? ' aria-current="page"' : '')
-                . ' class="block rounded-lg px-4 py-2 text-sm font-semibold whitespace-nowrap transition '
+                . ' class="block rounded-lg px-2 py-2 text-center text-sm font-semibold whitespace-nowrap transition sm:px-4 '
                 . ($on ? 'bg-accent-600 text-white shadow-glow-sm' : 'text-mute hover:bg-white/5 hover:text-white') . '">' . e($label) . '</a></li>';
         }
         echo '</ul></nav></header>';

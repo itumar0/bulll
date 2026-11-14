@@ -11,6 +11,9 @@
       el.style.left = (Number(el.dataset.tlLeft) / DAY * 100) + '%';
       if (el.dataset.tlWidth) el.style.width = (Number(el.dataset.tlWidth) / DAY * 100) + '%';
     });
+    // Report charts: bar heights / widths in percent.
+    $$('[data-bar-h]', root).forEach(function (el) { el.style.height = Number(el.dataset.barH) + '%'; });
+    $$('[data-bar-w]', root).forEach(function (el) { el.style.width = Number(el.dataset.barW) + '%'; });
   }
 
   // Confirmation for destructive actions.
@@ -47,9 +50,20 @@
     inp.addEventListener('input', function () { inp.value = mask(inp.value); });
   });
 
+  // Timeline: on open, scroll to the current time (or the first booking of the day).
+  function scrollTimeline(root) {
+    $$('[data-tl-scroll]', root).forEach(function (box) {
+      var inner = box.firstElementChild; if (!inner) return;
+      var track = inner.scrollWidth - 80; // minus the table-name column
+      var x = 80 + track * Number(box.dataset.tlScroll) / DAY - box.clientWidth / 3;
+      box.scrollLeft = Math.max(0, x);
+    });
+  }
+
   // Live refresh of the #live region every 30 s (statuses, remaining time, lists).
   var live = document.getElementById('live');
   layout(document);
+  scrollTimeline(document);
   if (live && window.fetch && window.DOMParser) {
     setInterval(function () {
       if (document.visibilityState !== 'visible') return;
@@ -63,8 +77,10 @@
           if (!html) return;
           var fresh = new DOMParser().parseFromString(html, 'text/html').getElementById('live');
           if (!fresh) return;
+          var boxes = $$('[data-tl-scroll]', live).map(function (b) { return b.scrollLeft; });
           live.innerHTML = fresh.innerHTML;
           layout(live);
+          $$('[data-tl-scroll]', live).forEach(function (b, i) { if (boxes[i] != null) b.scrollLeft = boxes[i]; });
         })
         .catch(function () { /* offline: try again on the next tick */ });
     }, POLL);

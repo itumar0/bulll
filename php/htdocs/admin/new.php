@@ -44,11 +44,11 @@ admin_page_start('Новая бронь', 'new');
 
 <form method="post" class="card grid gap-4 p-5 sm:p-6" novalidate>
   <?= csrf_field() ?>
-  <div class="grid grid-cols-2 gap-3">
+  <div class="grid gap-3 sm:grid-cols-2">
     <div>
       <label for="nb-table" class="label">Стол</label>
       <select id="nb-table" name="tableId" class="field">
-        <?php foreach (TABLES as $id => $t): ?><option value="<?= e($id) ?>"<?= $v['tableId'] === $id ? ' selected' : '' ?>><?= e($t['name']) ?> (до <?= (int) $t['capacity'] ?>)</option><?php endforeach; ?>
+        <?php foreach (TABLES as $id => $t): ?><option value="<?= e($id) ?>"<?= $v['tableId'] === $id ? ' selected' : '' ?>><?= e($t['name']) ?> — до <?= (int) $t['capacity'] ?> гостей</option><?php endforeach; ?>
       </select>
     </div>
     <div>
@@ -68,20 +68,20 @@ admin_page_start('Новая бронь', 'new');
     </div>
   </div>
 
-  <fieldset class="grid gap-3">
+  <fieldset class="group grid gap-3">
     <legend class="label">Начало</legend>
     <div class="grid grid-cols-2 gap-2">
       <label class="chip cursor-pointer has-checked:border-accent-500 has-checked:bg-accent-600/15 has-checked:text-white"><input type="radio" name="when" value="now" class="sr-only"<?= $v['when'] === 'now' ? ' checked' : '' ?>> Сейчас</label>
       <label class="chip cursor-pointer has-checked:border-accent-500 has-checked:bg-accent-600/15 has-checked:text-white"><input type="radio" name="when" value="later" class="sr-only"<?= $v['when'] !== 'now' ? ' checked' : '' ?>> Выбрать время</label>
     </div>
-    <div class="grid grid-cols-2 gap-3">
-      <div>
-        <label for="nb-date" class="label text-xs">Дата (если «выбрать время»)</label>
-        <input id="nb-date" name="date" type="date" class="field" value="<?= e($v['date']) ?>">
+    <div class="hidden grid-cols-[minmax(0,1fr)_7.5rem] gap-3 group-has-[input[value=later]:checked]:grid">
+      <div class="min-w-0">
+        <label for="nb-date" class="label">Дата</label>
+        <input id="nb-date" name="date" type="date" class="field min-w-0 px-3" value="<?= e($v['date']) ?>">
         <?= $err('date') ?>
       </div>
       <div>
-        <label for="nb-time" class="label text-xs">Время</label>
+        <label for="nb-time" class="label">Время</label>
         <select id="nb-time" name="startMinutes" class="field">
           <?php for ($m = 0; $m <= LAST_START_MIN; $m += SLOT_MIN): ?><option value="<?= $m ?>"<?= (string) $m === $v['startMinutes'] ? ' selected' : '' ?>><?= sprintf('%02d:%02d', intdiv($m, 60), $m % 60) ?></option><?php endfor; ?>
         </select>
