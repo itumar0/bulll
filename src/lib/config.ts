@@ -1,10 +1,10 @@
 /** Public, non-secret club configuration (safe to ship to the browser). */
 export const CLUB = {
-  name: "RED SHOT",
-  fullName: "RED SHOT — бильярдный клуб",
-  slogan: "Точный удар. Тёмный зал. Твоя игра.",
+  name: "Бильярд Старт",
+  fullName: "Бильярд Старт",
+  slogan: "Твоя игра начинается здесь.",
   description:
-    "Премиальный бильярдный клуб в Бишкеке: 6 профессиональных столов и 2 VIP-комнаты. Онлайн-бронирование за минуту.",
+    "«Бильярд Старт» — бильярдный клуб в Бишкеке: 6 профессиональных столов и 2 VIP-комнаты. Онлайн-бронирование за минуту.",
   city: "Бишкек",
   address: "г. Бишкек, ул. Киевская, 95",
   mapUrl: "https://2gis.kg/bishkek/search/%D0%9A%D0%B8%D0%B5%D0%B2%D1%81%D0%BA%D0%B0%D1%8F%2095",

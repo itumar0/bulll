@@ -13,7 +13,7 @@ interface StatusResponse {
   tables: TableStatusPublic[];
 }
 
-export const SELECT_TABLE_EVENT = "redshot:select-table";
+export const SELECT_TABLE_EVENT = "start:select-table";
 
 function statusLabel(t: TableStatusPublic) {
   if (t.state === "busy" && t.busyUntil) return `Занят до ${formatTime(t.busyUntil)}`;

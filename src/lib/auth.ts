@@ -1,7 +1,7 @@
 /** Edge-compatible JWT session helpers (used by middleware and route handlers). */
 import { SignJWT, jwtVerify } from "jose";
 
-export const SESSION_COOKIE = "rs_admin_session";
+export const SESSION_COOKIE = "start_admin_session";
 export const SESSION_TTL_SECONDS = 8 * 60 * 60;
 
 function secretKey(): Uint8Array {
@@ -15,8 +15,8 @@ export async function createSessionToken(): Promise<string> {
     .setProtectedHeader({ alg: "HS256" })
     .setSubject("admin")
     .setIssuedAt()
-    .setIssuer("red-shot")
-    .setAudience("red-shot-admin")
+    .setIssuer("start-billiards")
+    .setAudience("start-billiards-admin")
     .setExpirationTime(`${SESSION_TTL_SECONDS}s`)
     .sign(secretKey());
 }
@@ -26,8 +26,8 @@ export async function verifySessionToken(token: string | undefined): Promise<boo
   try {
     const { payload } = await jwtVerify(token, secretKey(), {
       algorithms: ["HS256"],
-      issuer: "red-shot",
-      audience: "red-shot-admin",
+      issuer: "start-billiards",
+      audience: "start-billiards-admin",
     });
     return payload.role === "admin";
   } catch {

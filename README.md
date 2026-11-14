@@ -1,4 +1,4 @@
-# RED SHOT — сайт бильярдного клуба
+# «Бильярд Старт» — сайт бильярдного клуба
 
 Сайт бильярдного клуба с онлайн-бронированием столов, отправкой заявок в WhatsApp, live-статусами столов и защищённой админ-панелью.
 
@@ -198,14 +198,14 @@ npm run build
 Запуск через pm2:
 
 ```bash
-npm i -g pm2 && pm2 start npm --name redshot -- start -- -p 3000 && pm2 save
+npm i -g pm2 && pm2 start npm --name start -- start -- -p 3000 && pm2 save
 ```
 
 Nginx как reverse proxy. HTTPS обязателен: cookie сессии в production помечена `Secure`.
 
 ```nginx
 server {
-  server_name redshot.kg;
+  server_name start.kg;
   location / {
     proxy_pass http://127.0.0.1:3000;
     proxy_set_header Host $host;

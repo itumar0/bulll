@@ -36,7 +36,7 @@ export function quickContactMessage(name: string, phone: string, message: string
 
 /** Message the admin sends to a client from the dashboard. */
 export function clientMessage(b: Omit<BookingMessageInput, "phone" | "guests" | "comment">): string {
-  return `Здравствуйте, ${b.name}! Это бильярдный клуб RED SHOT. По вашей брони №${b.id}: ${b.tableName}, ${formatDate(
+  return `Здравствуйте, ${b.name}! Это «Бильярд Старт». По вашей брони №${b.id}: ${b.tableName}, ${formatDate(
     b.startAt,
   )}, ${formatTime(b.startAt)} – ${formatTime(b.endAt)}.`;
 }

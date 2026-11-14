@@ -23,13 +23,13 @@ export function Hero({ whatsapp }: { whatsapp: string }) {
         <div>
           <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-1.5 text-xs font-semibold text-soft">
             <span className="h-1.5 w-1.5 rounded-full bg-red-500 shadow-glow-sm" aria-hidden />
-            Бильярдный клуб · {CLUB.city}
+            {CLUB.city} · {CLUB.hoursLabel}
           </p>
-          <h1 id="hero-title" className="text-[3.4rem] leading-[0.92] font-extrabold tracking-[-0.04em] sm:text-8xl lg:text-[7.5rem]">
-            RED
+          <h1 id="hero-title" className="text-[3.4rem] leading-[1.02] font-extrabold tracking-[-0.04em] sm:text-8xl lg:text-[7.5rem]">
+            Бильярд
             <br />
             <span className="bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(230,57,70,0.35)]">
-              SHOT
+              СТАРТ
             </span>
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-soft sm:text-xl">{CLUB.slogan}</p>

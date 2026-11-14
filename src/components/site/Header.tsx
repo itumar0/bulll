@@ -15,7 +15,7 @@ export function Logo() {
         <span className="grid h-4 w-4 place-items-center rounded-full bg-white text-[9px] font-black text-ink-950">8</span>
       </span>
       <span className="text-lg font-extrabold tracking-tight">
-        RED<span className="text-red-500">SHOT</span>
+        Бильярд <span className="text-red-500">Старт</span>
         <span className="sr-only"> — на главную</span>
       </span>
     </Link>
