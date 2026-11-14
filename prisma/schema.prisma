@@ -1,0 +1,38 @@
+// To switch to PostgreSQL: change provider to "postgresql" and DATABASE_URL.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model PoolTable {
+  id        String    @id // "t1".."t6", "vip1", "vip2"
+  name      String
+  type      String // "REGULAR" | "VIP"
+  capacity  Int
+  sortOrder Int       @default(0)
+  bookings  Booking[]
+}
+
+model Booking {
+  id        Int       @id @default(autoincrement())
+  tableId   String
+  table     PoolTable @relation(fields: [tableId], references: [id])
+  name      String
+  phone     String // normalized: +996XXXXXXXXX
+  guests    Int
+  comment   String?
+  startAt   DateTime // UTC
+  endAt     DateTime // UTC
+  status    String    @default("PENDING") // PENDING | CONFIRMED | COMPLETED | CANCELLED
+  source    String    @default("WEBSITE") // WEBSITE | ADMIN
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([tableId, startAt, endAt])
+  @@index([startAt])
+  @@index([status])
+}
