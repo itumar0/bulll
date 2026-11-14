@@ -51,7 +51,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     description: CLUB.description,
     url: siteUrl,
     telephone: "+996506056556",
-    address: { "@type": "PostalAddress", addressLocality: "Каракол", addressCountry: "KG" },
+    address: { "@type": "PostalAddress", streetAddress: CLUB.street, addressLocality: "Каракол", addressCountry: "KG" },
     sameAs: [CLUB.instagram, CLUB.mapUrl],
     openingHours: "Mo-Su 00:00-24:00",
   };

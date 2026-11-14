@@ -13,3 +13,4 @@ prisma/*.db-journal
 .DS_Store
 npm-debug.log*
 .vercel
+php/htdocs/includes/config.local.php
