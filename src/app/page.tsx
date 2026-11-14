@@ -1,5 +1,8 @@
 import { BookingForm } from "@/components/site/BookingForm";
 import { Contacts } from "@/components/site/Contacts";
+import { Features } from "@/components/site/Features";
+import { MobileCta } from "@/components/site/MobileCta";
+import { Pricing } from "@/components/site/Pricing";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
 import { Hero } from "@/components/site/Hero";
@@ -36,6 +39,20 @@ export default async function HomePage() {
       <main id="main">
         <Hero whatsapp={whatsapp} />
 
+        <section aria-labelledby="why-title" className="pt-20 sm:pt-28">
+          <div className="container-x">
+            <Reveal>
+              <SectionHeading
+                id="why-title"
+                eyebrow="Почему «Бильярд Старт»"
+                title="Всё для хорошей игры"
+                text="Удобные столы, отдельные VIP-комнаты и бронь без звонков — приходите и играйте."
+              />
+            </Reveal>
+            <Features />
+          </div>
+        </section>
+
         <section id="tables" aria-labelledby="tables-title" className="py-20 sm:py-28">
           <div className="container-x">
             <Reveal>
@@ -43,10 +60,24 @@ export default async function HomePage() {
                 id="tables-title"
                 eyebrow="Наши столы"
                 title="6 столов и 2 VIP-комнаты"
-                text="Профессиональное сукно, выверенные борта и свет без бликов. Статус обновляется в реальном времени — нажмите на стол, чтобы забронировать."
+                text="Статус каждого стола обновляется в реальном времени. Нажмите на свободный стол, чтобы забронировать его."
               />
             </Reveal>
             <TablesSection initial={initial} />
+          </div>
+        </section>
+
+        <section id="prices" aria-labelledby="prices-title" className="pb-20 sm:pb-28">
+          <div className="container-x">
+            <Reveal>
+              <SectionHeading
+                id="prices-title"
+                eyebrow="Цены"
+                title="Простые и честные цены"
+                text="Платите только за время игры. Забронируйте онлайн — стол будет ждать вас."
+              />
+            </Reveal>
+            <Pricing />
           </div>
         </section>
 
@@ -82,13 +113,19 @@ export default async function HomePage() {
         <section id="contacts" aria-labelledby="contacts-title" className="pt-10 pb-20 sm:pb-28">
           <div className="container-x">
             <Reveal>
-              <SectionHeading id="contacts-title" eyebrow="Контакты" title="Ждём вас в клубе" />
+              <SectionHeading
+                id="contacts-title"
+                eyebrow="Контакты"
+                title="Ждём вас в клубе"
+                text="Подписывайтесь на наш Instagram, чтобы не пропустить турниры и акции. Маршрут до клуба — в 2ГИС."
+              />
             </Reveal>
             <Contacts whatsapp={whatsapp} />
           </div>
         </section>
       </main>
       <Footer />
+      <MobileCta whatsapp={whatsapp} />
     </>
   );
 }

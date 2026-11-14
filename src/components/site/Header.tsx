@@ -1,8 +1,11 @@
 import Link from "next/link";
+import { CLUB } from "@/lib/config";
 import { buttonClass } from "../ui/Button";
+import { InstagramIcon } from "../ui/icons";
 
 const nav = [
   { href: "#tables", label: "Столы" },
+  { href: "#prices", label: "Цены" },
   { href: "#booking", label: "Бронь" },
   { href: "#contact", label: "Связь" },
   { href: "#contacts", label: "Контакты" },
@@ -38,9 +41,20 @@ export function Header() {
             ))}
           </ul>
         </nav>
-        <a href="#booking" className={buttonClass("primary", "sm")}>
-          Забронировать
-        </a>
+        <div className="flex items-center gap-1">
+          <a
+            href={CLUB.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram клуба"
+            className="hidden rounded-lg p-2 text-mute transition-colors hover:text-white sm:inline-flex"
+          >
+            <InstagramIcon />
+          </a>
+          <a href="#booking" className={buttonClass("primary", "sm")}>
+            Забронировать
+          </a>
+        </div>
       </div>
     </header>
   );

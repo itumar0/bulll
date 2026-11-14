@@ -9,11 +9,11 @@ const siteUrl = process.env.SITE_URL || "http://localhost:3000";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: `${CLUB.name} — бильярдный клуб в Бишкеке | Онлайн-бронирование`,
+    default: `${CLUB.name} — бильярдный клуб в Караколе | Онлайн-бронирование`,
     template: `%s | ${CLUB.name}`,
   },
   description: CLUB.description,
-  keywords: ["бильярд Бишкек", "бильярдный клуб", "русский бильярд", "пул", "VIP комната", "бронирование стола"],
+  keywords: ["бильярд Каракол", "Бильярд Старт", "бильярдный клуб", "русский бильярд", "пул", "VIP комната", "бронирование стола"],
   applicationName: CLUB.name,
   alternates: { canonical: "/" },
   openGraph: {
@@ -21,12 +21,12 @@ export const metadata: Metadata = {
     locale: "ru_RU",
     url: "/",
     siteName: CLUB.name,
-    title: `${CLUB.name} — бильярдный клуб в Бишкеке`,
+    title: `${CLUB.name} — бильярдный клуб в Караколе`,
     description: CLUB.description,
   },
   twitter: {
     card: "summary_large_image",
-    title: `${CLUB.name} — бильярдный клуб в Бишкеке`,
+    title: `${CLUB.name} — бильярдный клуб в Караколе`,
     description: CLUB.description,
   },
   robots: { index: true, follow: true },
@@ -50,7 +50,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     description: CLUB.description,
     url: siteUrl,
     telephone: "+996506056556",
-    address: { "@type": "PostalAddress", streetAddress: "ул. Киевская, 95", addressLocality: "Бишкек", addressCountry: "KG" },
+    address: { "@type": "PostalAddress", addressLocality: "Каракол", addressCountry: "KG" },
+    sameAs: [CLUB.instagram, CLUB.mapUrl],
     openingHours: "Mo-Su 12:00-02:00",
   };
 

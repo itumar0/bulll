@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Бильярд Старт — бильярдный клуб в Бишкеке";
+export const alt = "Бильярд Старт — бильярдный клуб в Караколе";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -50,10 +50,10 @@ export default function OgImage() {
               8
             </div>
           </div>
-          <div style={{ fontSize: 40, letterSpacing: 8, color: "#E63946", fontWeight: 700 }}>BILLIARD CLUB</div>
+          <div style={{ fontSize: 40, letterSpacing: 8, color: "#E63946", fontWeight: 700 }}>KARAKOL</div>
         </div>
-        <div style={{ fontSize: 150, fontWeight: 800, letterSpacing: -4, marginTop: 30 }}>START</div>
-        <div style={{ fontSize: 40, color: "#a3a3a3", marginTop: 10 }}>6 tables · 2 VIP rooms · Bishkek · 12:00 – 02:00</div>
+        <div style={{ fontSize: 120, fontWeight: 800, letterSpacing: -3, marginTop: 30 }}>BILLIARD START</div>
+        <div style={{ fontSize: 40, color: "#a3a3a3", marginTop: 10 }}>6 tables · 2 VIP rooms · Karakol · 12:00 – 02:00</div>
       </div>
     ),
     size,

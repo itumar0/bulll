@@ -66,7 +66,7 @@ export function TablesSection({ initial }: { initial: StatusResponse | null }) {
                 {vip && <div aria-hidden className="absolute -top-10 -right-10 h-28 w-28 rounded-full bg-red-600/20 blur-2xl" />}
                 <div className="mb-6 flex items-start justify-between gap-2">
                   <span className="text-xs font-bold tracking-[0.18em] text-neutral-400 uppercase">
-                    {vip ? "VIP-комната" : "Пул / Русский"}
+                    {vip ? "VIP-комната" : "Бильярдный стол"}
                   </span>
                   {vip && <CrownIcon className="h-4 w-4 text-red-500" />}
                 </div>

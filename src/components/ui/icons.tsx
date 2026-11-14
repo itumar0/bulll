@@ -68,3 +68,24 @@ export const InstagramIcon = (p: P) => (
     <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
   </svg>
 );
+
+export const TargetIcon = (p: P) => (
+  <svg {...base} stroke="currentColor" strokeWidth={1.8} {...p}>
+    <circle cx="12" cy="12" r="9" />
+    <circle cx="12" cy="12" r="5" />
+    <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none" />
+  </svg>
+);
+
+export const BoltIcon = (p: P) => (
+  <svg {...base} stroke="currentColor" strokeWidth={1.8} strokeLinejoin="round" {...p}>
+    <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" />
+  </svg>
+);
+
+export const MapIcon = (p: P) => (
+  <svg {...base} stroke="currentColor" strokeWidth={1.8} strokeLinejoin="round" {...p}>
+    <path d="m9 4-6 2v14l6-2 6 2 6-2V4l-6 2-6-2Z" />
+    <path d="M9 4v14M15 6v14" />
+  </svg>
+);
