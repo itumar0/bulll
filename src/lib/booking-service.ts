@@ -1,7 +1,7 @@
 import "server-only";
 import { Prisma, type Booking, type PoolTable } from "@prisma/client";
 import { prisma } from "./prisma";
-import { ACTIVE_STATUSES, CLOSE_MIN, TABLE_META, type TableId } from "./config";
+import { ACTIVE_STATUSES, TABLE_META, type TableId } from "./config";
 import { bishkekToUtc, businessDate, dayWindow } from "./time";
 import type { TableState, TableStatusAdmin, TableStatusPublic } from "./types";
 
@@ -113,11 +113,10 @@ export async function createBooking(args: CreateArgs): Promise<Booking & { table
   );
 }
 
-/** Website booking: date + startMinutes (Asia/Bishkek business day). */
+/** Website booking: date + startMinutes (Asia/Bishkek). The club is open 24/7. */
 export function websiteInterval(date: string, startMinutes: number, durationHours: number, now = new Date()) {
   const startAt = bishkekToUtc(date, startMinutes);
   const endAt = new Date(startAt.getTime() + durationHours * 3_600_000);
-  if (endAt > bishkekToUtc(date, CLOSE_MIN)) throw new BookingError("Бронь должна закончиться до 02:00", 400, "durationHours");
   // Allow booking the current slot (started up to 25 min ago), not older ones.
   if (startAt.getTime() < now.getTime() - 25 * 60_000) {
     throw new BookingError("Нельзя забронировать прошедшее время", 400, "startMinutes");

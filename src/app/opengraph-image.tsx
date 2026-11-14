@@ -53,7 +53,7 @@ export default function OgImage() {
           <div style={{ fontSize: 40, letterSpacing: 8, color: "#22C55E", fontWeight: 700 }}>KARAKOL</div>
         </div>
         <div style={{ fontSize: 120, fontWeight: 800, letterSpacing: -3, marginTop: 30 }}>BILLIARD START</div>
-        <div style={{ fontSize: 40, color: "#a3a3a3", marginTop: 10 }}>6 tables · 2 VIP rooms · Karakol · 12:00 – 02:00</div>
+        <div style={{ fontSize: 40, color: "#a3a3a3", marginTop: 10 }}>6 tables · 2 VIP rooms · Karakol · 24/7</div>
       </div>
     ),
     size,

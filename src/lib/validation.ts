@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { BOOKING_STATUSES, CLOSE_MIN, MAX_DURATION_H, MIN_DURATION_H, OPEN_MIN, SLOT_MIN, TABLE_IDS } from "./config";
+import { BOOKING_STATUSES, FIRST_START_MIN, LAST_START_MIN, MAX_DURATION_H, MIN_DURATION_H, SLOT_MIN, TABLE_IDS } from "./config";
 import { normalizePhone } from "./phone";
 import { isValidDateStr } from "./time";
 
@@ -47,8 +47,8 @@ const dateField = z.string().refine(isValidDateStr, "Некорректная д
 const startMinutesField = z.coerce
   .number()
   .int()
-  .min(OPEN_MIN, "Клуб открывается в 12:00")
-  .max(CLOSE_MIN - 60, "Последний старт — 01:00")
+  .min(FIRST_START_MIN, "Некорректное время")
+  .max(LAST_START_MIN, "Некорректное время")
   .refine((m) => m % SLOT_MIN === 0, "Время кратно 30 минутам");
 
 export const bookingCreateSchema = z
@@ -68,11 +68,7 @@ export const bookingCreateSchema = z
     /** Honeypot: must stay empty. */
     website: z.string().max(200).optional(),
   })
-  .strict()
-  .refine((d) => d.startMinutes + d.durationHours * 60 <= CLOSE_MIN, {
-    message: "Бронь должна закончиться до 02:00",
-    path: ["durationHours"],
-  });
+  .strict();
 
 export type BookingCreateInput = z.infer<typeof bookingCreateSchema>;
 
@@ -83,7 +79,7 @@ export const adminBookingCreateSchema = z
     phone: phoneField,
     tableId: z.enum(TABLE_IDS),
     date: dateField.optional(),
-    startMinutes: z.coerce.number().int().min(0).max(CLOSE_MIN).optional(),
+    startMinutes: z.coerce.number().int().min(FIRST_START_MIN).max(LAST_START_MIN).optional(),
     startNow: z.boolean().optional(),
     durationHours: z.coerce.number().min(0.5).max(MAX_DURATION_H).refine((h) => (h * 2) % 1 === 0, "Шаг 30 минут"),
     guests: z.coerce.number().int().min(1).max(10),

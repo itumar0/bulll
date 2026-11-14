@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { CLOSE_MIN, OPEN_MIN, SLOT_MIN, TABLE_IDS, TABLE_META, type TableId } from "@/lib/config";
+import { FIRST_START_MIN, LAST_START_MIN, SLOT_MIN, TABLE_IDS, TABLE_META, type TableId } from "@/lib/config";
 import { caretToEnd, formatPhoneMask } from "@/lib/phone";
 import { minutesLabel } from "@/lib/time";
 import { Button } from "../ui/Button";
@@ -9,7 +9,7 @@ import { CloseIcon } from "../ui/icons";
 import { adminFetch } from "./api";
 
 const DURATIONS = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
-const SLOTS = Array.from({ length: (CLOSE_MIN - 30 - OPEN_MIN) / SLOT_MIN + 1 }, (_, i) => OPEN_MIN + i * SLOT_MIN);
+const SLOTS = Array.from({ length: (LAST_START_MIN - FIRST_START_MIN) / SLOT_MIN + 1 }, (_, i) => FIRST_START_MIN + i * SLOT_MIN);
 
 export function NewBookingModal({
   open,

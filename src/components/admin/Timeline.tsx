@@ -1,12 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { CLOSE_MIN, OPEN_MIN, STATUS_LABEL, TABLE_IDS, TABLE_META, type BookingStatus } from "@/lib/config";
+import { STATUS_LABEL, TABLE_IDS, TABLE_META, type BookingStatus } from "@/lib/config";
 import { prettyPhone } from "@/lib/phone";
 import { businessMinutes, formatTime, minutesLabel } from "@/lib/time";
 import type { AdminBooking } from "@/lib/types";
 import { BookingActions } from "./BookingActions";
 
+// 24/7 club: the timeline covers the whole calendar day.
+const OPEN_MIN = 0;
+const CLOSE_MIN = 24 * 60;
 const SPAN = CLOSE_MIN - OPEN_MIN;
 const HOURS = Array.from({ length: SPAN / 60 + 1 }, (_, i) => OPEN_MIN + i * 60);
 
@@ -48,7 +51,7 @@ export function Timeline({
       </div>
 
       <div className="overflow-x-auto rounded-2xl border border-white/[0.07] bg-ink-900">
-        <div className="relative min-w-[960px] p-4">
+        <div className="relative min-w-[1440px] p-4">
           {/* hour scale */}
           <div className="relative ml-20 h-6 text-[11px] text-neutral-400">
             {HOURS.map((h) => (

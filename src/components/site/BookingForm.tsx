@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useMemo, useState, type FormEvent } from "react";
 import { usePolling, useNow } from "@/hooks/usePolling";
-import { CLOSE_MIN, MAX_DURATION_H, OPEN_MIN, POLL_INTERVAL_MS, SLOT_MIN, TABLE_IDS, TABLE_META, type TableId } from "@/lib/config";
+import { FIRST_START_MIN, LAST_START_MIN, MAX_DURATION_H, POLL_INTERVAL_MS, SLOT_MIN, TABLE_IDS, TABLE_META, type TableId } from "@/lib/config";
 import { caretToEnd, formatPhoneMask, normalizePhone } from "@/lib/phone";
 import { addDays, businessDate, businessMinutes, formatDateHuman, minutesLabel } from "@/lib/time";
 import type { BusyInterval } from "@/lib/types";
@@ -15,7 +15,7 @@ interface AvailabilityResponse {
   busy: BusyInterval[];
 }
 
-const SLOTS = Array.from({ length: (CLOSE_MIN - 60 - OPEN_MIN) / SLOT_MIN + 1 }, (_, i) => OPEN_MIN + i * SLOT_MIN);
+const SLOTS = Array.from({ length: (LAST_START_MIN - FIRST_START_MIN) / SLOT_MIN + 1 }, (_, i) => FIRST_START_MIN + i * SLOT_MIN);
 const DURATIONS = Array.from({ length: MAX_DURATION_H }, (_, i) => i + 1);
 const PAST_GRACE_MIN = 25;
 
@@ -70,9 +70,9 @@ export function BookingForm({ today: serverToday }: { today: string }) {
   const nowMin = date === today ? businessMinutes(new Date(now), date) : date < today ? Infinity : -Infinity;
   const overlaps = (s: number, e: number) => busy.some(([bs, be]) => s < be && e > bs);
   const isPast = (s: number) => s < nowMin - PAST_GRACE_MIN;
-  const slotDisabled = (s: number) => isPast(s) || s + duration * 60 > CLOSE_MIN || overlaps(s, s + duration * 60);
+  const slotDisabled = (s: number) => isPast(s) || overlaps(s, s + duration * 60);
   const slotBusy = (s: number) => overlaps(s, s + SLOT_MIN);
-  const durationDisabled = (d: number) => start !== null && (start + d * 60 > CLOSE_MIN || overlaps(start, start + d * 60));
+  const durationDisabled = (d: number) => start !== null && overlaps(start, start + d * 60);
 
   // Drop a start time that became unavailable (new data, table, date or duration).
   useEffect(() => {
@@ -294,7 +294,7 @@ export function BookingForm({ today: serverToday }: { today: string }) {
             <span>Время начала</span>
             <span className="text-xs font-normal text-neutral-400" aria-live="polite">свободно слотов: {freeSlots}</span>
           </legend>
-          <div role="radiogroup" aria-label="Время начала" className="grid grid-cols-4 gap-2 sm:grid-cols-5">
+          <div role="radiogroup" aria-label="Время начала" className="grid grid-cols-5 gap-1.5 sm:grid-cols-6 sm:gap-2">
             {SLOTS.map((s) => {
               const disabled = slotDisabled(s);
               const busyNow = slotBusy(s);

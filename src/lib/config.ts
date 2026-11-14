@@ -12,17 +12,19 @@ export const CLUB = {
   phoneHref: "tel:+996506056556",
   instagram: "https://www.instagram.com/starbilliard.karakol/",
   instagramHandle: "@starbilliard.karakol",
-  hoursLabel: "Ежедневно 12:00 – 02:00",
+  hoursLabel: "Круглосуточно, 24/7",
   priceRegular: 250,
   priceVip: 350,
 } as const;
 
-/** Working hours, in minutes from the business day's midnight (Asia/Bishkek). */
-export const OPEN_MIN = 12 * 60; // 12:00
-export const CLOSE_MIN = 26 * 60; // 02:00 next day
+/** The club works 24/7. Times are minutes from local midnight (Asia/Bishkek). */
 export const SLOT_MIN = 30;
 export const MAX_DURATION_H = 5;
 export const MIN_DURATION_H = 1;
+export const FIRST_START_MIN = 0; // 00:00
+export const LAST_START_MIN = 24 * 60 - SLOT_MIN; // 23:30
+/** Latest possible end of a booking that starts on a given date (may cross midnight). */
+export const MAX_END_MIN = LAST_START_MIN + MAX_DURATION_H * 60;
 
 export const TABLE_IDS = ["t1", "t2", "t3", "t4", "t5", "t6", "vip1", "vip2"] as const;
 export type TableId = (typeof TABLE_IDS)[number];

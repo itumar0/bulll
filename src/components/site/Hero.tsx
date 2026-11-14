@@ -8,7 +8,7 @@ export function Hero({ whatsapp }: { whatsapp: string }) {
   const stats = [
     { value: "6", label: "профессиональных столов" },
     { value: "2", label: "VIP-комнаты" },
-    { value: "14 ч", label: "ежедневно" },
+    { value: "24/7", label: "без выходных" },
   ];
   return (
     <section aria-labelledby="hero-title" className="relative isolate overflow-hidden pt-28 pb-20 sm:pt-36 sm:pb-28">

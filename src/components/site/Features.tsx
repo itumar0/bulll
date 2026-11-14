@@ -1,4 +1,3 @@
-import { CLUB } from "@/lib/config";
 import { Reveal } from "../ui/Reveal";
 import { BoltIcon, ClockIcon, CrownIcon, TargetIcon } from "../ui/icons";
 
@@ -20,8 +19,8 @@ const items = [
   },
   {
     icon: ClockIcon,
-    title: "Открыты допоздна",
-    text: `${CLUB.hoursLabel}. Приходите после работы или на ночную игру.`,
+    title: "Работаем 24/7",
+    text: "Круглосуточно и без выходных — приходите днём, вечером или ночью.",
   },
 ];
 

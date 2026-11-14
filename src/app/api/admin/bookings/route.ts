@@ -1,9 +1,8 @@
 import { NextRequest } from "next/server";
-import { BookingError, createBooking } from "@/lib/booking-service";
-import { CLOSE_MIN } from "@/lib/config";
+import { createBooking } from "@/lib/booking-service";
 import { handleError, json, readJson } from "@/lib/http";
 import { prisma } from "@/lib/prisma";
-import { bishkekToUtc, businessDate } from "@/lib/time";
+import { bishkekToUtc, businessDate, calendarDay } from "@/lib/time";
 import { adminBookingCreateSchema, adminBookingsQuerySchema } from "@/lib/validation";
 
 export const dynamic = "force-dynamic";
@@ -33,8 +32,9 @@ export async function GET(req: NextRequest) {
           : {}),
         ...(query.tableId ? { tableId: query.tableId } : {}),
         ...(query.status ? { status: query.status } : {}),
+        // Bookings that overlap the day (incl. ones that started before midnight).
         ...(query.date
-          ? { startAt: { gte: bishkekToUtc(query.date, 6 * 60), lt: bishkekToUtc(query.date, 30 * 60) } }
+          ? { startAt: { lt: calendarDay(query.date).to }, endAt: { gt: calendarDay(query.date).from } }
           : {}),
       },
       include: { table: { select: { name: true } } },
@@ -75,7 +75,6 @@ export async function POST(req: Request) {
     } else {
       const date = input.date ?? businessDate(now);
       startAt = bishkekToUtc(date, input.startMinutes);
-      if (startAt > bishkekToUtc(date, CLOSE_MIN)) throw new BookingError("Время за пределами рабочего дня");
     }
     const endAt = new Date(startAt.getTime() + input.durationHours * 3_600_000);
 

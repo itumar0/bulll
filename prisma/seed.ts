@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import { businessDate, dayWindow } from "../src/lib/time";
 
 const prisma = new PrismaClient();
 
@@ -48,9 +47,6 @@ async function main() {
   for (const b of demo) {
     const startAt = new Date(now.getTime() + b.start * H);
     const endAt = new Date(startAt.getTime() + b.hours * H);
-    // Keep demo data inside working hours (12:00–02:00 Asia/Bishkek).
-    const { from, to } = dayWindow(businessDate(startAt));
-    if (startAt < from || endAt > to) continue;
     created++;
     await prisma.booking.create({
       data: {
@@ -66,7 +62,7 @@ async function main() {
       },
     });
   }
-  console.log(`Seeded ${TABLES.length} tables and ${created} demo bookings (others fell outside working hours).`);
+  console.log(`Seeded ${TABLES.length} tables and ${created} demo bookings.`);
 }
 
 main()

@@ -1,16 +1,14 @@
 /**
  * Time helpers for Asia/Bishkek (UTC+6, no DST since 2005).
- * All DB timestamps are UTC; a "business date" is the calendar date on which a
- * working day starts (the club closes at 02:00, so 01:00 belongs to the previous date).
+ * All DB timestamps are UTC. The club works 24/7, so a booking date is simply the
+ * local calendar date of its start; bookings may run past midnight.
  * Pure functions — safe on both server and client.
  */
-import { CLOSE_MIN, OPEN_MIN } from "./config";
+import { MAX_END_MIN } from "./config";
 
 export const TZ = "Asia/Bishkek";
 const OFFSET_MS = 6 * 60 * 60 * 1000;
 const DAY_MS = 24 * 60 * 60 * 1000;
-/** Before this local hour, "today" still means the previous business day. */
-const BUSINESS_DAY_ROLLOVER_MIN = 6 * 60;
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -34,19 +32,24 @@ export function addDays(date: string, days: number): string {
   return bishkekParts(new Date(t)).date;
 }
 
-/** Business date for an instant (00:00–05:59 belong to the previous day). */
+/** Local (Asia/Bishkek) calendar date for an instant. */
 export function businessDate(instant: Date = new Date()): string {
-  const { date, minutes } = bishkekParts(instant);
-  return minutes < BUSINESS_DAY_ROLLOVER_MIN ? addDays(date, -1) : date;
+  return bishkekParts(instant).date;
 }
 
-/** Minutes since the business date's midnight (e.g. 01:00 next day → 1500). */
+/** Minutes since the date's local midnight (e.g. 01:00 next day → 1500, 23:00 day before → -60). */
 export function businessMinutes(instant: Date, date: string): number {
   return Math.round((instant.getTime() - bishkekToUtc(date, 0).getTime()) / 60_000);
 }
 
+/** Everything that can affect slots of `date`: from its midnight to the latest possible end. */
 export function dayWindow(date: string): { from: Date; to: Date } {
-  return { from: bishkekToUtc(date, OPEN_MIN), to: bishkekToUtc(date, CLOSE_MIN) };
+  return { from: bishkekToUtc(date, 0), to: bishkekToUtc(date, MAX_END_MIN) };
+}
+
+/** The calendar day itself: [00:00, 24:00). */
+export function calendarDay(date: string): { from: Date; to: Date } {
+  return { from: bishkekToUtc(date, 0), to: bishkekToUtc(date, 24 * 60) };
 }
 
 /** "HH:mm" for minutes (wraps past midnight). */

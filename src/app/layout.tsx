@@ -52,7 +52,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     telephone: "+996506056556",
     address: { "@type": "PostalAddress", addressLocality: "Каракол", addressCountry: "KG" },
     sameAs: [CLUB.instagram, CLUB.mapUrl],
-    openingHours: "Mo-Su 12:00-02:00",
+    openingHours: "Mo-Su 00:00-24:00",
   };
 
   return (
