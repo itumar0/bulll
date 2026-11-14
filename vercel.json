@@ -2,6 +2,5 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
   "installCommand": "npm ci",
-  "buildCommand": "prisma migrate deploy && npm run build",
-  "regions": ["iad1"]
+  "buildCommand": "DIRECT_URL=\"${DIRECT_URL:-${DATABASE_URL_UNPOOLED:-$DATABASE_URL}}\" prisma migrate deploy && npm run build"
 }

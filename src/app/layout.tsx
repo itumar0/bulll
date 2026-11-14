@@ -3,8 +3,9 @@ import { headers } from "next/headers";
 import "@fontsource-variable/manrope/index.css";
 import "./globals.css";
 import { CLUB } from "@/lib/config";
+import { siteUrl as siteUrl_ } from "@/lib/site-url";
 
-const siteUrl = process.env.SITE_URL || "http://localhost:3000";
+const siteUrl = siteUrl_();
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

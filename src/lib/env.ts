@@ -3,10 +3,12 @@ import { z } from "zod";
 
 const schema = z.object({
   DATABASE_URL: z.string().min(1),
-  WHATSAPP_NUMBER: z.string().regex(/^\d{10,15}$/, "WHATSAPP_NUMBER: digits only, e.g. 996506056556"),
+  WHATSAPP_NUMBER: z
+    .string()
+    .regex(/^\d{10,15}$/, "WHATSAPP_NUMBER: digits only, e.g. 996506056556")
+    .default("996506056556"),
   ADMIN_PASSWORD_HASH: z.string().min(20, "ADMIN_PASSWORD_HASH must be a bcrypt hash"),
   JWT_SECRET: z.string().min(32, "JWT_SECRET must be at least 32 characters"),
-  SITE_URL: z.string().url().default("http://localhost:3000"),
 });
 
 export type Env = z.infer<typeof schema>;
