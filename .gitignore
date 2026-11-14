@@ -16,3 +16,4 @@ npm-debug.log*
 php/htdocs/includes/config.local.php
 php/htdocs/uploads/*
 !php/htdocs/uploads/.htaccess
+!php/build/

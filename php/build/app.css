@@ -1,0 +1,111 @@
+/* Tailwind source for the PHP site. Build: php/build/build-css.sh → php/htdocs/assets/app.css */
+@import "tailwindcss";
+@source "../htdocs";
+
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url("fonts/manrope-cyrillic.woff2") format("woff2-variations");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url("fonts/manrope-latin.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@theme {
+  --font-sans: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --color-ink-950: #0a0a0a;
+  --color-ink-900: #141414;
+  --color-ink-850: #1a1a1a;
+  --color-ink-800: #1f1f1f;
+  --color-ink-700: #2a2a2a;
+  --color-ink-600: #3a3a3a;
+  --color-mute: #a3a3a3;
+  --color-soft: #d4d4d4;
+
+  /* Brand accent: billiard-felt green */
+  --color-accent-100: #dcfce7;
+  --color-accent-200: #bbf7d0;
+  --color-accent-300: #86efac;
+  --color-accent-400: #4ade80;
+  --color-accent-500: #22c55e;
+  --color-accent-600: #15803d;
+  --color-accent-700: #166534;
+  --color-accent-950: #052e16;
+
+  --shadow-glow: 0 0 0 1px rgb(34 197 94 / 0.35), 0 10px 40px -10px rgb(21 128 61 / 0.6);
+  --shadow-glow-sm: 0 0 24px -6px rgb(34 197 94 / 0.6);
+  --shadow-glow-lg: 0 0 0 1px rgb(34 197 94 / 0.5), 0 14px 50px -10px rgb(34 197 94 / 0.7);
+
+  --animate-pulse-dot: pulse-dot 2s ease-in-out infinite;
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.45; transform: scale(0.85); }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    color-scheme: dark;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    background: var(--color-ink-950);
+    color: #fff;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection { background: var(--color-accent-600); color: #fff; }
+  :focus-visible { outline: 2px solid var(--color-accent-500); outline-offset: 3px; border-radius: 6px; }
+  input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.7; cursor: pointer; }
+  button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@layer components {
+  .container-x { @apply mx-auto w-full max-w-6xl px-5 sm:px-8; }
+  .field {
+    @apply w-full rounded-xl border border-ink-700 bg-ink-900 px-4 py-3.5 text-base text-white placeholder:text-neutral-500 transition-colors outline-none focus:border-accent-500 focus:ring-2 focus:ring-accent-500/30 disabled:opacity-50 aria-invalid:border-red-500/70;
+  }
+  .label { @apply mb-2 block text-sm font-medium text-soft; }
+  .field-error { @apply mt-2 text-sm text-red-400; }
+  .card { @apply rounded-2xl border border-white/[0.07] bg-ink-900; }
+  .chip {
+    @apply inline-flex min-h-11 items-center justify-center rounded-xl border border-ink-700 bg-ink-900 px-1.5 text-[13px] font-semibold whitespace-nowrap text-soft transition-all hover:border-ink-600 hover:text-white disabled:cursor-not-allowed disabled:border-transparent disabled:bg-ink-850 disabled:text-neutral-600 disabled:line-through aria-checked:border-accent-500 aria-checked:bg-accent-600/15 aria-checked:text-white aria-checked:shadow-glow-sm sm:px-3 sm:text-sm;
+  }
+  .grain {
+    background-image: radial-gradient(rgb(255 255 255 / 0.035) 1px, transparent 1px);
+    background-size: 3px 3px;
+  }
+  .hero-gradient { filter: drop-shadow(0 0 30px rgb(34 197 94 / 0.35)); }
+  .number-plain { appearance: textfield; -moz-appearance: textfield; }
+  .number-plain::-webkit-inner-spin-button, .number-plain::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  .pb-safe { padding-bottom: max(0.75rem, env(safe-area-inset-bottom)); }
+}
+
+/* Scroll-reveal (only when JS is on — content stays visible without JS) */
+.js .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+.js .reveal.is-visible { opacity: 1; transform: none; }
+
+/* Floating hero logo */
+@keyframes ball-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+.ball-float { animation: ball-float 6s ease-in-out infinite; }
